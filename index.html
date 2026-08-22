@@ -624,9 +624,9 @@ function submitInquiry(){
   if(!phone||phone.length<5){document.getElementById('inqPhone').style.borderColor='#e74c3c';return}
   const btn=document.querySelector('.inq-submit');btn.disabled=true;btn.textContent='提交中...';
   fetch('https://ofs-asia-d9gk28pf5a4314791.service.tcloudbase.com/collect-lead',{
-    method:'POST',headers:{'Content-Type':'application/json'},
+    method:'POST',mode:'no-cors',
     body:JSON.stringify({phone,name,type,msg,linggen:'官网咨询',source:'ofs-website'})
-  }).then(r=>r.json()).then(j=>{
+  }).then(()=>{
     document.getElementById('inqFormWrap').style.display='none';
     document.getElementById('inqOkWrap').style.display='block';
     btn.disabled=false;btn.textContent='提交 · Submit';
