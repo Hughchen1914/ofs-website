@@ -21,6 +21,27 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:200;background:rgba(250,248,2
 .menu-toggle{display:none;background:none;border:none;color:#8a7a65;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:4px}
 .menu-toggle:hover{color:#b8944e}
 
+.inq-mask{position:fixed;inset:0;background:rgba(30,25,18,.55);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.inq-modal{background:#fff;border-radius:16px;max-width:430px;width:100%;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
+.inq-modal h3{margin:0 0 6px;font-size:20px;color:#3a3530}
+.inq-modal .inq-sub{font-size:12.5px;color:#8a7a65;margin-bottom:18px;line-height:1.6}
+.inq-modal input,.inq-modal select,.inq-modal textarea{width:100%;padding:12px 14px;border:1.5px solid #e0d6c6;border-radius:10px;font-size:14px;margin-bottom:12px;font-family:inherit;color:#3a3530;outline:none;background:#fdfbf7}
+.inq-modal input:focus,.inq-modal select:focus,.inq-modal textarea:focus{border-color:#b8944e}
+.inq-modal textarea{resize:vertical;min-height:70px}
+.inq-modal .inq-row{display:flex;gap:10px}
+.inq-modal .inq-row>*{flex:1}
+.inq-submit{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#c9a45c,#b8944e);color:#fff;font-size:15px;font-weight:600;letter-spacing:2px;cursor:pointer}
+.inq-submit:active{transform:scale(.98)}
+.inq-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;color:#aaa;cursor:pointer;line-height:1}
+.inq-modal{position:relative}
+.inq-contacts{margin-top:14px;padding-top:14px;border-top:1px dashed #e0d6c6;font-size:12.5px;color:#6b5d3e;line-height:2}
+.inq-contacts b{color:#b8944e}
+.inq-ok{display:none;text-align:center;padding:20px 10px}
+.inq-ok .ok-icon{font-size:44px;margin-bottom:10px}
+.inq-ok .ok-title{font-size:17px;font-weight:600;color:#3a3530;margin-bottom:6px}
+.inq-ok .ok-sub{font-size:13px;color:#8a7a65;line-height:1.8}
+
+
 /* ===== Container ===== */
 .container{max-width:1120px;margin:0 auto;padding:0 24px}
 .page{display:none}.page.active{display:block}
@@ -132,8 +153,8 @@ footer{text-align:center;padding:32px 24px;border-top:1px solid rgba(180,150,100
       <div class="hero-l"></div>
       <p data-i18n="hDesc">二十五载精油传承 · 以香气对话世界</p>
       <div class="hero-btns">
-        <button class="btn btn-primary" onclick="alert('📋 请联系我们获取报价')" data-i18n="heroCta1">获取报价</button>
-        <button class="btn btn-outline" onclick="go('contact')" data-i18n="heroCta2">咨询合作</button>
+        <button class="btn btn-primary" onclick="openInquiry('报价')" data-i18n="heroCta1">获取报价</button>
+        <button class="btn btn-outline" onclick="openInquiry('合作')" data-i18n="heroCta2">咨询合作</button>
       </div>
     </section>
   </div>
@@ -222,7 +243,7 @@ footer{text-align:center;padding:32px 24px;border-top:1px solid rgba(180,150,100
     <h2 data-i18n="ctaT">让每一缕香气，都有它的归属</h2>
     <div class="sec-l"></div>
     <p data-i18n="ctaS">无论是单方精油、复方调香还是 OEM 代工，我们为您提供一站式解决方案</p>
-    <button class="btn btn-primary" onclick="go('contact')" data-i18n="ctaBtn">立即咨询 →</button>
+    <button class="btn btn-primary" onclick="openInquiry('咨询')" data-i18n="ctaBtn">立即咨询 →</button>
   </div>
 </div>
 
@@ -324,7 +345,7 @@ footer{text-align:center;padding:32px 24px;border-top:1px solid rgba(180,150,100
       <p style="font-size:14px;color:#5a4a35;margin-bottom:12px" data-i18n="ctLoc">📍 中国 · 广州</p>
       <p style="font-size:14px;color:#5a4a35;margin-bottom:12px">📞 15919334313</p>
       <p style="font-size:14px;color:#5a4a35;margin-bottom:24px" data-i18n="ctNote">如需产品目录、报价或合作洽谈，请发送邮件</p>
-      <button class="btn btn-primary" onclick="alert('📧 请发送邮件至您的邮箱')" data-i18n="ctaBtn">发送邮件询价</button>
+      <button class="btn btn-primary" onclick="openInquiry('询价')" data-i18n="ctaBtn">发送邮件询价</button>
     </div>
   </div>
 </div>
@@ -583,6 +604,39 @@ ctT:"اتصل بنا",ctS:"نتطلع إلى تواصلك",ctLoc:"📍 قوان�
 fBrand:"فانغتينغ · أورينت فراغرانس ساينس",fRig:"جميع الحقوق محفوظة"
 }
 };
+
+function openInquiry(type){
+  document.getElementById('inqMask').style.display='flex';
+  document.getElementById('inqFormWrap').style.display='block';
+  document.getElementById('inqOkWrap').style.display='none';
+  document.getElementById('inqName').value='';
+  document.getElementById('inqPhone').value='';
+  document.getElementById('inqMsg').value='';
+  if(type){const sel=document.getElementById('inqType');[...sel.options].forEach(o=>{if(o.value===type)sel.value=type});}
+}
+function closeInquiry(){document.getElementById('inqMask').style.display='none'}
+function submitInquiry(){
+  const name=document.getElementById('inqName').value.trim();
+  const phone=document.getElementById('inqPhone').value.trim();
+  const type=document.getElementById('inqType').value;
+  const msg=document.getElementById('inqMsg').value.trim();
+  if(!name){document.getElementById('inqName').style.borderColor='#e74c3c';return}
+  if(!phone||phone.length<5){document.getElementById('inqPhone').style.borderColor='#e74c3c';return}
+  const btn=document.querySelector('.inq-submit');btn.disabled=true;btn.textContent='提交中...';
+  fetch('https://ofs-asia-d9gk28pf5a4314791.service.tcloudbase.com/collect-lead',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({phone,name,type,msg,linggen:'官网咨询',source:'ofs-website'})
+  }).then(r=>r.json()).then(j=>{
+    document.getElementById('inqFormWrap').style.display='none';
+    document.getElementById('inqOkWrap').style.display='block';
+    btn.disabled=false;btn.textContent='提交 · Submit';
+  }).catch(()=>{
+    document.getElementById('inqFormWrap').style.display='none';
+    document.getElementById('inqOkWrap').style.display='block';
+    btn.disabled=false;btn.textContent='提交 · Submit';
+  });
+}
+
 function toggleMenu(e){
   if(e)e.stopPropagation();
   document.querySelector('.nav-links').classList.toggle('open');
@@ -642,4 +696,39 @@ document.querySelectorAll('.lang-btn').forEach(btn=>{
 const saved=localStorage.getItem('ofsLang');
 if(saved&&lang[saved])document.querySelector('.lang-btn[data-lang="'+saved+'"]').click();
 </script>
+
+<!-- 咨询/报价弹窗 -->
+<div class="inq-mask" id="inqMask" onclick="if(event.target===this)closeInquiry()">
+  <div class="inq-modal">
+    <button class="inq-close" onclick="closeInquiry()">×</button>
+    <div id="inqFormWrap">
+      <h3 id="inqTitle">获取报价 / 咨询合作</h3>
+      <div class="inq-sub" id="inqSub">留下联系方式，25年调香经验的团队将尽快与您联系 · We reply within 24h</div>
+      <div class="inq-row">
+        <input id="inqName" placeholder="姓名 Name *" type="text">
+        <input id="inqPhone" placeholder="手机/微信 Phone/WeChat *" type="tel" maxlength="20">
+      </div>
+      <select id="inqType">
+        <option value="报价">获取报价（单方精油/产品目录）</option>
+        <option value="合作">品牌合作 / OEM·ODM</option>
+        <option value="调香">调香定制 / 配方开发</option>
+        <option value="其他">其他咨询</option>
+      </select>
+      <textarea id="inqMsg" placeholder="留言 Message（可选）"></textarea>
+      <button class="inq-submit" onclick="submitInquiry()">提交 · Submit</button>
+      <div class="inq-contacts">
+        直接联系：<b>微信/电话 15919334313</b> · 19539341349<br>
+        地址：广州白云里国际美妆中心 2F#2327<br>
+        邮件：<b>ofs@fangting.com</b>（报价单可邮件索取）
+      </div>
+    </div>
+    <div class="inq-ok" id="inqOkWrap">
+      <div class="ok-icon">✅</div>
+      <div class="ok-title">已收到您的咨询</div>
+      <div class="ok-sub">我们会尽快联系您！<br>急事可直拨 <b>15919334313</b>（微信同号）</div>
+      <button class="inq-submit" style="margin-top:14px" onclick="closeInquiry()">好的</button>
+    </div>
+  </div>
+</div>
+
 </body></html>
