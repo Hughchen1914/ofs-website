@@ -465,14 +465,14 @@ function showLinggenFinal(){
   const lg = LINGGEN[linggenIdx];
   const plan = lg.oils.map(([cn,d])=>{ const oil=oilByCn(cn); return {...oil, drops:d}; });
   const usage = (answers.usage||["香薰"])[0];
-  const sizeMap = { 香薰:{bottle:4.5, name:"20ml枕头喷雾瓶", ml:20, drops:80}, 香水:{bottle:4.5, name:"20ml香水喷雾瓶", ml:20, drops:80}, 护肤:{bottle:2.8, name:"10ml滚珠瓶", ml:10, drops:40}, 车载:{bottle:3.0, name:"10ml车载瓶", ml:10, drops:40} };
+  const sizeMap = { 香薰:{bottle:4.5, name:"20ml枕头喷雾瓶", ml:20, drops:80}, 香水:{bottle:4.5, name:"20ml香水喷雾瓶", ml:20, drops:80}, 护肤:{bottle:2.8, name:"10ml滚珠瓶", ml:10, drops:20}, 车载:{bottle:3.0, name:"10ml车载瓶", ml:10, drops:40} };
   const cfg = sizeMap[usage] || sizeMap["香薰"];
   const totalBase = plan.reduce((s,o)=>s+o.drops, 0);
   const mult = cfg.drops / totalBase;   // 按配方基准动态换算，保证总滴数=容量
-  const PERFUME_PRICE = 0.5;   // 香水类原料单价 元/ml（可调）
-  const perfumeMl = cfg.ml * 0.1;    // 香水类原料 10% 容量
-  const perfumeDrops = Math.round(perfumeMl / 0.05);
-  const perfumeCost = perfumeMl * PERFUME_PRICE;
+  const isRoll = cfg.name.indexOf("滚珠") >= 0;   // 护肤滚珠不加香水原料
+  const perfumeMl = isRoll ? 0 : cfg.ml * 0.1;     // 香水类原料 10% 容量
+  const perfumeDrops = isRoll ? 0 : Math.round(perfumeMl / 0.05);
+  const perfumeCost = isRoll ? 0 : 4.9;            // 香水类原料每瓶固定 +4.9 元
   const oilBase = 0.2, perDrop = 0.05;
   let oilCost = 0;
   const detailRows = plan.map(o => {
@@ -493,13 +493,13 @@ function showLinggenFinal(){
 
   document.getElementById("fName").textContent = lg.name + " · 本命香";
   const pct2 = Math.round(cfg.drops * perDrop / cfg.ml * 100);
-  document.getElementById("fSub").textContent = lg.tag + " | " + cfg.name + " · " + pct2 + "%精油 + 10%香水原料";
+  document.getElementById("fSub").textContent = lg.tag + " | " + cfg.name + " · " + pct2 + "%精油" + (isRoll ? "" : " + 10%香水原料");
   const box = document.getElementById("recipeBox");
   box.innerHTML = detailRows.map(r => `
     <div class="r-row"><div>${r.cn} <span class="r-note">${r.drops}滴 · ${r.ml.toFixed(2)}ml</span></div>
     <div class="r-drops" style="font-size:14px">¥${r.cost.toFixed(2)}</div></div>`).join("") + `
     <div class="r-row" style="border-top:1px dashed rgba(232,200,122,.4); margin-top:6px; padding-top:10px"><div>精油成本合计</div><div style="color:#e8c87a;font-weight:600">¥${oilCost.toFixed(2)}</div></div>
-    <div class="r-row"><div>香水类原料 ${perfumeMl.toFixed(1)}ml <span class="r-note">${perfumeDrops}滴 · 10%</span></div><div style="color:#a8a0c0">¥${perfumeCost.toFixed(2)}</div></div>
+    ${perfumeMl > 0 ? `<div class="r-row"><div>香水类原料 ${perfumeMl.toFixed(1)}ml <span class="r-note">${perfumeDrops}滴 · 10%</span></div><div style="color:#a8a0c0">¥${perfumeCost.toFixed(2)}</div></div>` : ""}
     <div class="r-row"><div>${cfg.name} + 基底 ${baseMl.toFixed(1)}ml</div><div style="color:#a8a0c0">¥${(baseCost+cfg.bottle).toFixed(2)}</div></div>
     <div class="r-row"><div style="color:#e8c87a">✦ ${lg.ch}灵根 · ${lg.desc}</div></div>`;
   document.getElementById("price").textContent = "¥" + price;
@@ -651,7 +651,7 @@ function showResult() {
   if (plan.length < 6) plan.push(OILS.sweetOrange);
 
   // 瓶型与滴数：20ml=120滴 / 10ml=60滴，贵油限滴实现价格差异化
-  const sizeMap = { 香薰:{bottle:4.5, name:"20ml枕头喷雾瓶", ml:20, drops:80}, 香水:{bottle:4.5, name:"20ml香水喷雾瓶", ml:20, drops:80}, 护肤:{bottle:2.8, name:"10ml滚珠瓶", ml:10, drops:40}, 车载:{bottle:3.0, name:"10ml车载瓶", ml:10, drops:40} };
+  const sizeMap = { 香薰:{bottle:4.5, name:"20ml枕头喷雾瓶", ml:20, drops:80}, 香水:{bottle:4.5, name:"20ml香水喷雾瓶", ml:20, drops:80}, 护肤:{bottle:2.8, name:"10ml滚珠瓶", ml:10, drops:20}, 车载:{bottle:3.0, name:"10ml车载瓶", ml:10, drops:40} };
   const usage = (answers.usage||["香薰"])[0];
   const cfg = sizeMap[usage] || sizeMap["香薰"];
   const drops = {};
@@ -673,10 +673,10 @@ function showResult() {
   if (Object.keys(drops).length < plan.length) { plan.forEach(o => { if (!(o.k in drops)) drops[o.k] = 0; }); }
 
   // 价格：瓶型规格 + 琥珀定香（秘密配方，不显示）
-  const PERFUME_PRICE = 0.5;   // 香水类原料单价 元/ml（可调）
-  const perfumeMl = cfg.ml * 0.1;    // 香水类原料 10% 容量
-  const perfumeDrops = Math.round(perfumeMl / 0.05);
-  const perfumeCost = perfumeMl * PERFUME_PRICE;
+  const isRoll = cfg.name.indexOf("滚珠") >= 0;   // 护肤滚珠不加香水原料
+  const perfumeMl = isRoll ? 0 : cfg.ml * 0.1;     // 香水类原料 10% 容量
+  const perfumeDrops = isRoll ? 0 : Math.round(perfumeMl / 0.05);
+  const perfumeCost = isRoll ? 0 : 4.9;            // 香水类原料每瓶固定 +4.9 元
   const oilBase = 0.2;  // 基底单价 元/ml
   const perDrop = 0.05;
   let oilCost = 0;
@@ -697,13 +697,13 @@ function showResult() {
 
   const pct = Math.round(cfg.drops * perDrop / cfg.ml * 100);
   document.getElementById("fName").textContent = plan.map(o => o.cn).join(" · ");
-  document.getElementById("fSub").textContent = cfg.name + " · " + pct + "%精油 + 10%香水原料 · 专属定制";
+  document.getElementById("fSub").textContent = cfg.name + " · " + pct + "%精油" + (isRoll ? "" : " + 10%香水原料") + " · 专属定制";
   const box = document.getElementById("recipeBox");
   box.innerHTML = detailRows.map(r => `
     <div class="r-row"><div>${r.cn} <span class="r-note">${r.drops}滴 · ${r.ml.toFixed(2)}ml</span></div>
     <div class="r-drops" style="font-size:14px">¥${r.cost.toFixed(2)}</div></div>`).join("") + `
     <div class="r-row" style="border-top:1px dashed rgba(232,200,122,.4); margin-top:6px; padding-top:10px"><div>精油成本合计</div><div style="color:#e8c87a;font-weight:600">¥${oilCost.toFixed(2)}</div></div>
-    <div class="r-row"><div>香水类原料 ${perfumeMl.toFixed(1)}ml <span class="r-note">${perfumeDrops}滴 · 10%</span></div><div style="color:#a8a0c0">¥${perfumeCost.toFixed(2)}</div></div>
+    ${perfumeMl > 0 ? `<div class="r-row"><div>香水类原料 ${perfumeMl.toFixed(1)}ml <span class="r-note">${perfumeDrops}滴 · 10%</span></div><div style="color:#a8a0c0">¥${perfumeCost.toFixed(2)}</div></div>` : ""}
     <div class="r-row"><div>${cfg.name} + 基底 ${baseMl.toFixed(1)}ml</div><div style="color:#a8a0c0">¥${(baseCost+cfg.bottle).toFixed(2)}</div></div>`;
   document.getElementById("price").textContent = "¥" + price;
   document.getElementById("priceNote").innerHTML = `原价 <span class="price-old">¥${price}</span> 发朋友圈立享 <b style="color:#e8c87a;font-size:22px">¥${disc}</b> · 现场3分钟做好`;
