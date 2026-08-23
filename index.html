@@ -93,6 +93,28 @@ section{padding:60px 0}
 .gallery-nav{display:flex;justify-content:center;gap:8px;margin-top:24px}
 .gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(180,150,100,0.2);cursor:pointer;transition:all .3s;border:none}
 .gallery-dot.active{background:#b8944e;width:24px;border-radius:4px}
+/* ===== Carousel (2026-08-23 重写) ===== */
+.carousel{position:relative;max-width:860px;margin:0 auto}
+.carousel-viewport{overflow:hidden;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.carousel-track{display:flex;transition:transform .55s ease}
+.carousel-slide{min-width:100%;flex:0 0 100%;position:relative}
+.carousel-slide img{width:100%;height:380px;object-fit:cover;display:block}
+.carousel-caption{position:absolute;left:0;right:0;bottom:0;padding:34px 24px 18px;background:linear-gradient(transparent,rgba(20,15,8,.72));color:#fff;font-size:15px;letter-spacing:1px;text-align:center}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.88);color:#6b5d3e;font-size:22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:5;transition:all .25s;line-height:1}
+.carousel-btn:hover{background:#b8944e;color:#fff}
+.carousel-btn.prev{left:14px}
+.carousel-btn.next{right:14px}
+[dir="rtl"] .carousel-btn.prev{left:auto;right:14px}
+[dir="rtl"] .carousel-btn.next{right:auto;left:14px}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
+.carousel-dot{width:9px;height:9px;border-radius:50%;border:none;background:rgba(180,150,100,.28);cursor:pointer;padding:0;transition:all .3s}
+.carousel-dot.active{background:#b8944e;width:26px;border-radius:5px}
+@media(max-width:768px){
+  .carousel-slide img{height:240px}
+  .carousel-caption{font-size:13px;padding:26px 16px 14px}
+  .carousel-btn{width:34px;height:34px;font-size:18px}
+}
+
 
 /* ===== Video ===== */
 .video-box{background:#fff;border-radius:8px;border:1px solid rgba(180,150,100,0.1);overflow:hidden}
@@ -194,36 +216,45 @@ footer{text-align:center;padding:32px 24px;border-top:1px solid rgba(180,150,100
     <h2 class="sec-t" data-i18n="galleryT">合作见证</h2>
     <div class="sec-l"></div>
     <p class="sec-s" data-i18n="galleryS">与全球客户携手同行</p>
-    <div class="gallery" id="gallery">
-      <div class="gallery-track" id="galleryTrack">
-        <div class="gallery-item">
-          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/ofs_gallery_IMG_5013.jpg" alt="Client" style="width:100%;height:280px;object-fit:cover;border-radius:6px">
-          <div class="gallery-text"><h4 data-i18n="galleryT1">ZARINA 集团</h4><p data-i18n="galleryD1">与 ZARINA 团队合作4.5吨精油订单，建立长期战略合作关系。</p></div>
+        <div class="gallery" id="gallery">
+      <div class="carousel" id="carousel">
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_3971.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap1">广州美博会 · 与客户团队合影</div>
         </div>
-        <div class="gallery-item">
-          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/ofs_gallery_IMG_4915.jpg" alt="Client" style="width:100%;height:280px;object-fit:cover;border-radius:6px">
-          <div class="gallery-text"><h4 data-i18n="galleryT2">俄罗斯客户</h4><p data-i18n="galleryD2">年复一年的信任，从单一原料到多品类定制。</p></div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4058.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap2">与中东客户交流香氛产品</div>
         </div>
-        <div class="gallery-item">
-          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/ofs_gallery_IMG_4865.jpg" alt="Client" style="width:100%;height:280px;object-fit:cover;border-radius:6px">
-          <div class="gallery-text"><h4 data-i18n="galleryT3">中东合作伙伴</h4><p data-i18n="galleryD3">深耕中东市场，以品质赢得长期订单。</p></div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4088.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap3">展会现场洽谈合作</div>
         </div>
-        <div class="gallery-item">
-          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/ofs_brazil.jpg" alt="Brazil Client" style="width:100%;height:280px;object-fit:cover;border-radius:6px">
-          <div class="gallery-text"><h4 data-i18n="galleryT4">巴西客户</h4><p data-i18n="galleryD4">来自巴西的长期合作伙伴，年复一年的信任与支持。</p></div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4109.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap4">与中东客商合影</div>
         </div>
-        <div class="gallery-item">
-          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/ofs_maya.jpg" alt="Maya" style="width:100%;height:280px;object-fit:cover;border-radius:6px">
-          <div class="gallery-text"><h4 data-i18n="galleryT5">与马娅女士 · CBE创始人</h4><p data-i18n="galleryD5">芳廷连续多年参展CBE，与行业顶尖同行。</p></div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4117.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap5">国际客户到访展位</div>
         </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_A.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap6">展会现场产品交流</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_B.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap7">为客户定制包装方案</div>
+        </div>
+          </div>
+        </div>
+        <button class="carousel-btn prev" onclick="carouselGo(gi-1)" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" onclick="carouselGo(gi+1)" aria-label="Next">›</button>
+        <div class="carousel-dots" id="carouselDots"></div>
       </div>
-      <div class="gallery-nav">
-        <button class="gallery-dot active" onclick="galleryGo(0)"></button>
-        <button class="gallery-dot" onclick="galleryGo(1)"></button>
-        <button class="gallery-dot" onclick="galleryGo(2)"></button>
-        <button class="gallery-dot" onclick="galleryGo(3)"></button>
-        <button class="gallery-dot" onclick="galleryGo(4)"></button>
-      </div>
+    </div>      </div>
     </div>
   </div>
 
@@ -534,7 +565,7 @@ svcT:"Low MOQ",s1T:"品牌调香",s1D:"为您的品牌打造专属香型，从�
 abT:"精油现货",stockSub:"137 种单方精油现货供应，支持 1kg 起订",stockSearch:"🔍 搜索精油名称...",stockDl:"下载完整报价单 →",stockUnit:"/公升",ab1D:"Orient Fragrance Science（芳廷）创立于资深调香师超过 25 年的行业深耕之上。",
 ab3l1:"25 年调香经验",ab3l2:"137 种精油数据库",ab3l3:"自有实验室",
 ctT:"联系我们",ctS:"期待与您的对话",ctLoc:"📍 中国 · 广州",ctNote:"如需产品目录、报价或合作洽谈",
-fBrand:"芳廷 · Orient Fragrance Science",fRig:"All rights reserved."
+fBrand:"芳廷 · Orient Fragrance Science",fRig:"All rights reserved.",cap1:"Guangzhou Beauty Expo · With our client team",cap2:"Meeting Middle East clients over fragrances",cap3:"Business talks at the expo",cap4:"With Middle East partners",cap5:"International clients at our booth",cap6:"Product exchange at the expo",cap7:"Custom packaging solutions for clients",cap1:"广州美博会 · 与客户团队合影",cap2:"与中东客户交流香氛产品",cap3:"展会现场洽谈合作",cap4:"与中东客商合影",cap5:"国际客户到访展位",cap6:"展会现场产品交流",cap7:"为客户定制包装方案"
 },
 en:{
 brand:"OFS",navHome:"Home",navProd:"Perfume Stock",navSvc:"Low MOQ",navAbout:"Oil Stock",navContact:"Contact",
@@ -602,7 +633,7 @@ svcT:"Low MOQ",s1T:"عطر العلامة",s1D:"ابتكار عطر مميز ل�
 abT:"زيت متوفر",stockSub:"137 زيتًا عطريًا متوفرًا، الحد الأدنى للطلب 1 كجم",stockSearch:"🔍 ابحث عن اسم الزيت...",stockDl:"تحميل قائمة الأسعار الكاملة ←",stockUnit:"/لتر",ab1D:"وُلدت أورينت فراغرانس ساينس من أكثر من 25 عامًا من الخبرة.",
 ab3l1:"25 عام خبرة",ab3l2:"قاعدة 137 زيتًا",ab3l3:"مختبر داخلي",
 ctT:"اتصل بنا",ctS:"نتطلع إلى تواصلك",ctLoc:"📍 قوانغتشو، الصين",ctNote:"للكتالوجات والاستفسارات",
-fBrand:"فانغتينغ · أورينت فراغرانس ساينس",fRig:"جميع الحقوق محفوظة"
+fBrand:"فانغتينغ · أورينت فراغرانس ساينس",fRig:"جميع الحقوق محفوظة",cap1:"معرض قوانغتشو للتجميل · مع فريق العملاء",cap2:"لقاء مع عملاء من الشرق الأوسط حول العطور",cap3:"محادثات أعمال في المعرض",cap4:"مع شركاء من الشرق الأوسط",cap5:"عملاء دوليون في جناحنا",cap6:"تبادل المنتجات في المعرض",cap7:"حلول تغليف مخصصة للعملاء"
 }
 };
 
@@ -658,6 +689,45 @@ function go(page){
 }
 function toggleCard(el){el.classList.toggle('expanded')}
 let gi=0;
+const carouselTrack=document.getElementById('carouselTrack');
+const carouselSlides=document.querySelectorAll('.carousel-slide');
+const carouselDots=document.getElementById('carouselDots');
+const carouselCount=carouselSlides.length;
+let carouselTimer=null;
+// 动态生成圆点
+if(carouselDots){
+  for(let i=0;i<carouselCount;i++){
+    const d=document.createElement('button');
+    d.className='carousel-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.onclick=()=>carouselGo(i);
+    carouselDots.appendChild(d);
+  }
+}
+function carouselGo(i){
+  if(!carouselTrack||!carouselCount)return;
+  gi=((i%carouselCount)+carouselCount)%carouselCount;
+  const rtl=document.documentElement.dir==='rtl';
+  carouselTrack.style.transform='translateX('+(rtl?'':' -')+(gi*100)+'%)';
+  document.querySelectorAll('.carousel-dot').forEach((d,k)=>d.classList.toggle('active',k===gi));
+  restartCarousel();
+}
+function restartCarousel(){clearInterval(carouselTimer);carouselTimer=setInterval(()=>carouselGo(gi+1),5000)}
+// 触摸滑动
+let touchX=null;
+const carouselEl=document.getElementById('carousel');
+if(carouselEl){
+  carouselEl.addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;clearInterval(carouselTimer)},{passive:true});
+  carouselEl.addEventListener('touchend',e=>{
+    if(touchX===null)return;
+    const dx=e.changedTouches[0].clientX-touchX;
+    if(Math.abs(dx)>40){const rtl=document.documentElement.dir==='rtl';carouselGo(gi+(rtl?(-dx>0?1:-1):(dx<0?1:-1)))}
+    touchX=null;restartCarousel();
+  },{passive:true});
+  carouselEl.addEventListener('mouseenter',()=>clearInterval(carouselTimer));
+  carouselEl.addEventListener('mouseleave',restartCarousel);
+}
+restartCarousel();
 
 function filterStock(q){
   q=q.toLowerCase();
