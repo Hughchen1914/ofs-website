@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فانغتينغ · أورينت فراغرانس ساينس</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"Noto Sans SC","PingFang SC","Segoe UI",sans-serif;background:#faf8f5;color:#3a3530;line-height:1.7;overflow-x:hidden}
+
+/* ===== Nav ===== */
+nav{position:fixed;top:0;left:0;width:100%;z-index:200;background:rgba(250,248,245,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(180,150,100,0.12);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-size:18px;letter-spacing:3px;color:#b8944e;font-weight:500;cursor:pointer}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:#8a7a65;text-decoration:none;font-size:13px;letter-spacing:2px;transition:color .3s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:#b8944e}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.lang-btn{background:transparent;border:1px solid rgba(180,150,100,0.2);color:#8a7a65;padding:3px 9px;font-size:11px;letter-spacing:1px;cursor:pointer;border-radius:3px;transition:all .3s;font-family:inherit}
+.lang-btn:hover,.lang-btn.active{border-color:#b8944e;color:#b8944e;background:rgba(180,150,100,0.08)}
+
+.menu-toggle{display:none;background:none;border:none;color:#8a7a65;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:4px}
+.menu-toggle:hover{color:#b8944e}
+
+.inq-mask{position:fixed;inset:0;background:rgba(30,25,18,.55);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.inq-modal{background:#fff;border-radius:16px;max-width:430px;width:100%;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
+.inq-modal h3{margin:0 0 6px;font-size:20px;color:#3a3530}
+.inq-modal .inq-sub{font-size:12.5px;color:#8a7a65;margin-bottom:18px;line-height:1.6}
+.inq-modal input,.inq-modal select,.inq-modal textarea{width:100%;padding:12px 14px;border:1.5px solid #e0d6c6;border-radius:10px;font-size:14px;margin-bottom:12px;font-family:inherit;color:#3a3530;outline:none;background:#fdfbf7}
+.inq-modal input:focus,.inq-modal select:focus,.inq-modal textarea:focus{border-color:#b8944e}
+.inq-modal textarea{resize:vertical;min-height:70px}
+.inq-modal .inq-row{display:flex;gap:10px}
+.inq-modal .inq-row>*{flex:1}
+.inq-submit{width:100%;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#c9a45c,#b8944e);color:#fff;font-size:15px;font-weight:600;letter-spacing:2px;cursor:pointer}
+.inq-submit:active{transform:scale(.98)}
+.inq-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;color:#aaa;cursor:pointer;line-height:1}
+.inq-modal{position:relative}
+.inq-contacts{margin-top:14px;padding-top:14px;border-top:1px dashed #e0d6c6;font-size:12.5px;color:#6b5d3e;line-height:2}
+.inq-contacts b{color:#b8944e}
+.inq-ok{display:none;text-align:center;padding:20px 10px}
+.inq-ok .ok-icon{font-size:44px;margin-bottom:10px}
+.inq-ok .ok-title{font-size:17px;font-weight:600;color:#3a3530;margin-bottom:6px}
+.inq-ok .ok-sub{font-size:13px;color:#8a7a65;line-height:1.8}
+
+
+/* ===== Container ===== */
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+.page{display:none}.page.active{display:block}
+
+/* ===== Hero ===== */
+.hero{padding:140px 0 80px;text-align:center}
+.hero-sub{font-size:13px;letter-spacing:4px;color:#b8944e;margin-bottom:16px}
+.hero h1{font-size:52px;font-weight:200;letter-spacing:8px;color:#2a2520;margin-bottom:12px}
+.hero-l{width:40px;height:2px;background:#b8944e;margin:20px auto}
+.hero p{font-size:16px;color:#8a7a65;max-width:600px;margin:0 auto 32px}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 32px;border-radius:4px;font-size:14px;letter-spacing:2px;cursor:pointer;transition:all .3s;text-decoration:none;border:none}
+.btn-primary{background:#b8944e;color:#fff}
+.btn-primary:hover{background:#a37e38;transform:translateY(-1px)}
+.btn-outline{border:1px solid #b8944e;color:#b8944e;background:transparent}
+.btn-outline:hover{background:rgba(180,148,78,0.08)}
+
+/* ===== Stats Bar ===== */
+.stats-bar{display:flex;justify-content:center;gap:48px;padding:40px 0;border-top:1px solid rgba(180,150,100,0.1);border-bottom:1px solid rgba(180,150,100,0.1);margin-bottom:60px;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-num{font-size:28px;font-weight:300;color:#b8944e;letter-spacing:2px}
+.stat-lbl{font-size:12px;color:#8a7a65;margin-top:4px}
+
+/* ===== Section ===== */
+section{padding:60px 0}
+.sec-t{font-size:28px;font-weight:300;letter-spacing:4px;color:#2a2520;text-align:center;margin-bottom:8px}
+.sec-l{width:32px;height:2px;background:#b8944e;margin:16px auto}
+.sec-s{font-size:14px;color:#8a7a65;text-align:center;margin-bottom:40px}
+
+/* ===== Cards ===== */
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.card{background:#fff;border-radius:8px;padding:28px;border:1px solid rgba(180,150,100,0.1);cursor:pointer;transition:all .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(180,150,100,0.12);border-color:rgba(180,150,100,0.25)}
+.card-ic{font-size:32px;margin-bottom:12px}
+.card h3{font-size:16px;font-weight:500;color:#2a2520;letter-spacing:2px;margin-bottom:8px}
+.card p{font-size:13px;color:#8a7a65;line-height:1.6;margin-bottom:12px}
+.tag{display:inline-block;padding:3px 10px;background:rgba(180,150,100,0.08);color:#b8944e;font-size:11px;border-radius:3px;margin:2px}
+.card-expand{max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .4s;opacity:0;padding-top:0}
+.card.expanded .card-expand{max-height:600px;opacity:1;padding-top:16px;border-top:1px solid rgba(180,150,100,0.15);margin-top:12px}
+.card-expand p{font-size:13px;color:#6a5a45;margin-bottom:6px}
+
+/* ===== Gallery ===== */
+.gallery{position:relative;overflow:hidden;border-radius:8px;background:#fff;border:1px solid rgba(180,150,100,0.1);padding:40px}
+.gallery-track{display:flex;transition:transform .5s ease}
+.gallery-item{min-width:100%;flex:0 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;padding:0 20px}
+.gallery-img{height:280px;background:rgba(180,150,100,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#b8944e;font-size:14px;letter-spacing:2px;border:1px dashed rgba(180,150,100,0.2)}
+.gallery-text h4{font-size:14px;color:#b8944e;letter-spacing:2px;margin-bottom:8px}
+.gallery-text p{font-size:14px;color:#5a4a35;line-height:1.7}
+.gallery-nav{display:flex;justify-content:center;gap:8px;margin-top:24px}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(180,150,100,0.2);cursor:pointer;transition:all .3s;border:none}
+.gallery-dot.active{background:#b8944e;width:24px;border-radius:4px}
+/* ===== Carousel (2026-08-23 重写) ===== */
+.carousel{position:relative;max-width:860px;margin:0 auto}
+.carousel-viewport{overflow:hidden;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.carousel-track{display:flex;transition:transform .55s ease}
+.carousel-slide{min-width:100%;flex:0 0 100%;position:relative}
+.carousel-slide img{width:100%;height:380px;object-fit:cover;display:block}
+.carousel-caption{position:absolute;left:0;right:0;bottom:0;padding:34px 24px 18px;background:linear-gradient(transparent,rgba(20,15,8,.72));color:#fff;font-size:15px;letter-spacing:1px;text-align:center}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.88);color:#6b5d3e;font-size:22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:5;transition:all .25s;line-height:1}
+.carousel-btn:hover{background:#b8944e;color:#fff}
+.carousel-btn.prev{left:14px}
+.carousel-btn.next{right:14px}
+[dir="rtl"] .carousel-btn.prev{left:auto;right:14px}
+[dir="rtl"] .carousel-btn.next{right:auto;left:14px}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:18px}
+.carousel-dot{width:9px;height:9px;border-radius:50%;border:none;background:rgba(180,150,100,.28);cursor:pointer;padding:0;transition:all .3s}
+.carousel-dot.active{background:#b8944e;width:26px;border-radius:5px}
+@media(max-width:768px){
+  .carousel-slide img{height:240px}
+  .carousel-caption{font-size:13px;padding:26px 16px 14px}
+  .carousel-btn{width:34px;height:34px;font-size:18px}
+}
+
+
+/* ===== Video ===== */
+.video-box{background:#fff;border-radius:8px;border:1px solid rgba(180,150,100,0.1);overflow:hidden}
+.video-placeholder{height:360px;background:rgba(180,150,100,0.04);display:flex;flex-direction:column;align-items:center;justify-content:center;border-bottom:1px solid rgba(180,150,100,0.08)}
+.video-placeholder .play{width:64px;height:64px;border-radius:50%;background:#b8944e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;margin-bottom:16px}
+.video-placeholder p{font-size:13px;color:#8a7a65}
+
+/* ===== CTA ===== */
+.cta-section{text-align:center;padding:80px 0;background:linear-gradient(180deg,rgba(180,150,100,0.04),transparent)}
+.cta-section h2{font-size:24px;font-weight:300;letter-spacing:4px;color:#2a2520;margin-bottom:8px}
+.cta-section p{color:#8a7a65;font-size:14px;margin-bottom:24px}
+.cta-section .btn-primary{font-size:15px;padding:14px 40px}
+
+/* ===== Footer ===== */
+footer{text-align:center;padding:32px 24px;border-top:1px solid rgba(180,150,100,0.1);font-size:12px;color:#8a7a65}
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  nav{padding:0 12px;height:56px}
+  .menu-toggle{display:block}
+  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(250,248,245,.98);flex-direction:column;padding:18px 24px;gap:16px;align-items:flex-start;box-shadow:0 10px 30px rgba(0,0,0,.1);z-index:300;border-bottom:1px solid rgba(180,150,100,.15)}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:15px;letter-spacing:2px;padding:6px 0;width:100%}
+  .nav-right{flex:1;justify-content:flex-end}
+  .nav-brand{margin-right:auto;white-space:nowrap;flex-shrink:0;font-size:16px}
+  .hero h1{font-size:32px}
+  .hero{padding:100px 0 48px}
+  .grid-3{grid-template-columns:1fr}
+  .gallery{padding:16px}
+  .gallery-item{grid-template-columns:1fr;padding:0 8px;gap:16px}
+  .stats-bar{gap:24px}
+  .btn{padding:10px 20px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-brand" data-i18n="brand" onclick="go('home')">أو إف إس</span>
+  <button class="menu-toggle" onclick="toggleMenu(event)" aria-label="菜单">☰</button>
+  <div class="nav-links">
+    <a class="active" data-i18n="navHome" onclick="go('home')">الرئيسية</a>
+    <a data-i18n="navProd" onclick="go('products')">عطر متوفر</a>
+    <a data-i18n="navSvc" onclick="go('services')">Low MOQ</a>
+    <a data-i18n="navAbout" onclick="go('about')">زيت متوفر</a>
+    <a data-i18n="navContact" onclick="go('contact')">اتصل</a>
+  </div>
+  <div class="nav-right">
+    <a class="lang-btn" href="index.html">中文</a><a class="lang-btn" href="en.html">EN</a><a class="lang-btn active" href="ar.html">العربية</a>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <div class="container">
+    <section class="hero">
+      <div class="hero-sub" data-i18n="homeSec1T">أورينت فراغرانس ساينس</div>
+      <h1 data-i18n="hTitle">أورينت فراغرانس ساينس</h1>
+      <div class="hero-l"></div>
+      <p data-i18n="hDesc">25 عامًا من تراث الزيوت العطرية</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="openInquiry('报价')" data-i18n="heroCta1">اطلب عرض سعر</button>
+        <button class="btn btn-outline" onclick="openInquiry('合作')" data-i18n="heroCta2">اتصل بنا</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">137+</div><div class="stat-lbl" data-i18n="hStat1">زيت مفرد</div></div>
+      <div class="stat-item"><div class="stat-num">25</div><div class="stat-lbl" data-i18n="hStat2">عام خبرة</div></div>
+      <div class="stat-item"><div class="stat-num">50万</div><div class="stat-lbl" data-i18n="hStat3">الطاقة اليومية</div></div>
+      <div class="stat-item"><div class="stat-num">6</div><div class="stat-lbl" data-i18n="hStat4">قارة</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="sec-t" data-i18n="homeSec1T">أورينت فراغرانس ساينس</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="homeSec1S">علم · جماليات شرقية · فلسفة العطر</p>
+    <div class="grid-3" style="margin-bottom:60px">
+      <div class="card" style="cursor:default">
+        <h3 data-i18n="homeC1T">رسالتنا</h3>
+        <p data-i18n="homeC1D">استخراج جوهر الطبيعة بالعلم وتفسير العطر بالحساسية الشرقية.</p>
+      </div>
+      <div class="card" style="cursor:default">
+        <h3 data-i18n="homeC2T">التوريد العالمي</h3>
+        <p data-i18n="homeC2D">من ورود غراس إلى خشب الصندل الهندي — توريد مباشر مع GC-MS.</p>
+      </div>
+      <div class="card" style="cursor:default">
+        <h3 data-i18n="homeC3T">الجودة</h3>
+        <p data-i18n="homeC3D">مختبر داخلي وغرفة نظيفة GMPC. 500 ألف وحدة/يوم.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 👥 客户见证 -->
+  <div class="container">
+    <h2 class="sec-t" data-i18n="galleryT">موثوق عالميًا</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="galleryS">شراكة مع عملاء حول العالم</p>
+        <div class="gallery" id="gallery">
+      <div class="carousel" id="carousel">
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_3971.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap1">معرض قوانغتشو للتجميل · مع فريق العملاء</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4058.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap2">لقاء مع عملاء من الشرق الأوسط حول العطور</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4088.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap3">محادثات أعمال في المعرض</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4109.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap4">مع شركاء من الشرق الأوسط</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_4117.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap5">عملاء دوليون في جناحنا</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_A.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap6">تبادل المنتجات في المعرض</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/gallery/carousel/IMG_B.jpg" alt="Client" loading="lazy">
+          <div class="carousel-caption" data-i18n="cap7">حلول تغليف مخصصة للعملاء</div>
+        </div>
+          </div>
+        </div>
+        <button class="carousel-btn prev" onclick="carouselGo(gi-1)" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" onclick="carouselGo(gi+1)" aria-label="Next">›</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+    </div>      </div>
+    </div>
+  </div>
+
+  <!-- 🎬 调香视频 -->
+  <div class="container" style="margin-top:60px">
+    <h2 class="sec-t" data-i18n="videoT">مصنعنا في قوانغتشو، الصين</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="videoS">جولة في منشأتنا GMPC ومختبراتنا</p>
+    <div class="video-box">
+      <video controls playsinline style="width:100%;display:block;border-radius:8px" poster="">
+        <source src="https://ofs-asia-d9gk28pf5a4314791-1427882633.tcloudbaseapp.com/video.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2 data-i18n="ctaT">كل عطر يجد منزله</h2>
+    <div class="sec-l"></div>
+    <p data-i18n="ctaS">زيوت مفردة، مزيج مخصص، OEM — حلول متكاملة</p>
+    <button class="btn btn-primary" onclick="openInquiry('咨询')" data-i18n="ctaBtn">استفسر الآن ←</button>
+  </div>
+</div>
+
+<div class="page" id="page-products">
+  <div class="container" style="padding-top:100px">
+    <h2 class="sec-t" data-i18n="prodT">المنتجات</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="prodS">من الزيوت المفردة إلى المزيج المخصص</p>
+    <div class="grid-3">
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-ic">🌿</div>
+        <h3 data-i18n="p1T">الزيوت المفردة</h3>
+        <p data-i18n="p1D">137 زيتًا عطريًا فاخرًا</p>
+        <div><span class="tag" data-i18n="p1tag1">زهري</span><span class="tag" data-i18n="p1tag2">خشبي</span><span class="tag" data-i18n="p1tag3">حمضي</span><span class="tag" data-i18n="p1tag4">عشبي</span></div>
+        <div class="card-expand"><p data-i18n="p1exp">مورد من 20+ دولة. الحد الأدنى 1 كجم.</p></div>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-ic">🌸</div>
+        <h3 data-i18n="p2T">المزيج العطري</h3>
+        <p data-i18n="p2D">تطوير العطور الأصلية</p>
+        <div><span class="tag" data-i18n="p2tag1">أصلي</span><span class="tag" data-i18n="p2tag2">كلاسيكي</span><span class="tag" data-i18n="p2tag3">مخصص</span></div>
+        <div class="card-expand">
+          <p data-i18n="p2exp1">أصلي: خبراء يصنعون عطرك</p>
+          <p data-i18n="p2exp2">كلاسيكي: دقة 95%+</p>
+          <p data-i18n="p2exp3">مخصص: عطر شخصي</p>
+        </div>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
+        <div class="card-ic">🧴</div>
+        <h3 data-i18n="p3T">تصنيع التجميل</h3>
+        <p data-i18n="p3D">خدمة OEM/ODM كاملة</p>
+        <div><span class="tag" data-i18n="p3tag1">وجه</span><span class="tag" data-i18n="p3tag2">جسم</span><span class="tag" data-i18n="p3tag3">شعر</span></div>
+        <div class="card-expand"><p data-i18n="p3exp1">غرفة نظيفة GMPC. تطوير التركيبات والتسجيل.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding-top:60px">
+    <h2 class="sec-t" data-i18n="prodCatT">فئات الزيوت</h2>
+    <div class="sec-l"></div>
+    <div class="grid-3">
+      <div class="card" style="cursor:default"><h3 style="text-align:center">🌹 <span data-i18n="cat1">زهري</span></h3><ul style="font-size:13px;color:#6a5a45;margin-top:12px;padding-left:16px"><li data-i18n="cat1l1">ورد (بلغاريا/تركيا/المغرب)</li><li data-i18n="cat1l2">خزامى (فرنسا/بلغاريا)</li><li data-i18n="cat1l3">ياسمين (الهند/مصر)</li></ul></div>
+      <div class="card" style="cursor:default"><h3 style="text-align:center">🌲 <span data-i18n="cat2">خشبي</span></h3><ul style="font-size:13px;color:#6a5a45;margin-top:12px;padding-left:16px"><li data-i18n="cat2l1">صندل (الهند/أستراليا)</li><li data-i18n="cat2l2">أرز (أمريكا/المغرب)</li><li data-i18n="cat2l3">سرو (فرنسا)</li></ul></div>
+      <div class="card" style="cursor:default"><h3 style="text-align:center">🍊 <span data-i18n="cat3">حمضي</span></h3><ul style="font-size:13px;color:#6a5a45;margin-top:12px;padding-left:16px"><li data-i18n="cat3l1">برتقال (البرازيل/أمريكا)</li><li data-i18n="cat3l2">ليمون (إيطاليا/الأرجنتين)</li><li data-i18n="cat3l3">برغموت (إيطاليا)</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-services">
+  <div class="container" style="padding-top:100px">
+    <h2 class="sec-t" data-i18n="svcT">Low MOQ</h2>
+    <div class="sec-l"></div>
+    <div class="grid-3">
+      <div class="card" style="cursor:default"><div class="card-ic">🎨</div><h3 data-i18n="s1T">عطر العلامة</h3><p data-i18n="s1D">ابتكار عطر مميز لعلامتك التجارية.</p></div>
+      <div class="card" style="cursor:default"><div class="card-ic">🧪</div><h3 data-i18n="s2T">تطوير التجميل</h3><p data-i18n="s2D">تطوير تركيبات قائمة على الزيوت الطبيعية.</p></div>
+      <div class="card" style="cursor:default"><div class="card-ic">🏭</div><h3 data-i18n="s3T">OEM/ODM</h3><p data-i18n="s3D">500 ألف/يوم، غرفة نظيفة GMPC.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-about">
+  <div class="container" style="padding-top:100px"><style>
+.stock-search{width:100%;padding:12px 16px;border:1px solid rgba(180,150,100,0.2);border-radius:6px;font-size:14px;background:#fff;color:#3a3530;margin-bottom:24px;outline:none;transition:border-color .3s}
+.stock-search:focus{border-color:#b8944e}
+.stock-cat{margin-bottom:20px;background:#fff;border-radius:8px;border:1px solid rgba(180,150,100,0.1);overflow:hidden}
+.stock-cat h3{padding:14px 20px;font-size:15px;font-weight:500;color:#2a2520;letter-spacing:2px;cursor:pointer;user-select:none;background:rgba(180,150,100,0.04)}
+.stock-cat h3:hover{background:rgba(180,150,100,0.08)}
+.stock-list{display:none;padding:0 20px 14px}
+.stock-cat.open .stock-list{display:block}
+.stock-item{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid rgba(180,150,100,0.06)}
+.stock-item:last-child{border:none}
+.stock-name{flex:1;font-size:13px;color:#2a2520}
+.stock-desc{flex:2;font-size:12px;color:#8a7a65;padding:0 12px}
+.stock-price{text-align:right;font-size:13px;color:#b8944e;white-space:nowrap}
+.stock-unit{font-size:11px;color:#8a7a65}
+@media(max-width:768px){
+  .stock-item{flex-wrap:wrap}
+  .stock-name{flex:auto;width:100%;margin-bottom:4px}
+  .stock-desc{flex:auto;width:100%;padding:0;margin-bottom:4px;font-size:11px}
+}
+[dir="rtl"] .stock-item{direction:rtl}
+[dir="rtl"] .stock-desc{text-align:right}
+[dir="rtl"] .stock-price{text-align:left}
+</style>
+    <h2 class="sec-t" data-i18n="abT">زيت متوفر</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="stockSub">137 زيتًا عطريًا متوفرًا، الحد الأدنى للطلب 1 كجم</p>
+    <input class="stock-search" id="stockSearch" placeholder="🔍 搜索精油名称..." data-i18n="stockSearch" oninput="filterStock(this.value)">
+    <div id="stockContainer"><div class="stock-cat"><h3>🌿 一、草本</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Clary Sage</div><div class="stock-desc">Anti - anxiety, regulates female hormones, relaxes muscle spasms, relieves menopause hot flashes and menstrual discomfort</div><div class="stock-price"><span>¥1920</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Clary Sage (Happy)</div><div class="stock-desc">Antidepressant, balances hormones, relieves menstrual pain, relaxes nerves, beneficial for female health</div><div class="stock-price"><span>¥776</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Basil</div><div class="stock-desc">Refreshes the mind, relieves headaches, boosts mood, antispasmodic, aids digestion, relieves mental fatigue</div><div class="stock-price"><span>¥440</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Basil (Sweet)</div><div class="stock-desc">Refreshes the mind, relieves headaches, aids digestion, antispasmodic, balances oil, antibacterial</div><div class="stock-price"><span>¥2530</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Peppermint</div><div class="stock-desc">Cool and refreshing, relieves headaches, aids digestion, anti - itching, improves respiration</div><div class="stock-price"><span>¥700</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Mint</div><div class="stock-desc">Cool and refreshing, relieves headaches, anti - inflammatory and anti - itching, aids digestion, clears the mind</div><div class="stock-price"><span>¥750</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Peppermint (Dementholized)</div><div class="stock-desc">Cool and refreshing, relieves headaches, anti - inflammatory and anti - itching, aids digestion, clears the mind</div><div class="stock-price"><span>¥345</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Spearmint</div><div class="stock-desc">Dispels wind and regulates qi, anti - inflammatory and analgesic, refreshes the mind, promotes digestion, relieves dysmenorrhea</div><div class="stock-price"><span>¥580</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rosemary</div><div class="stock-desc">Refreshes the mind, enhances memory, relieves muscle pain, promotes hair growth</div><div class="stock-price"><span>¥940</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Thyme</div><div class="stock-desc">Antibacterial and anti - inflammatory, enhances immunity, relieves coughs, boosts mood, anti - fatigue</div><div class="stock-price"><span>¥1300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Patchouli</div><div class="stock-desc">Refreshes the mind, astringent and firming, antifungal, promotes cell regeneration</div><div class="stock-price"><span>¥980</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Marjoram</div><div class="stock-desc">Calms the nerves, lowers blood pressure, relieves muscle pain, regulates menstruation, promotes blood circulation</div><div class="stock-price"><span>¥3400</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Palmarosa</div><div class="stock-desc">Powerful moisturizing, balances sebum, antibacterial, skin - caring, anti - infection, soothes emotions</div><div class="stock-price"><span>¥630</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Vetiver</div><div class="stock-desc">Deep relaxation, anti - anxiety, enhances immunity, antibacterial and anti - inflammatory, improves sleep</div><div class="stock-price"><span>¥1300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Citronella</div><div class="stock-desc">Repels mosquitoes, antibacterial and anti - inflammatory, relieves pain, relaxes muscles, refreshes the mind, regulates emotions</div><div class="stock-price"><span>¥390</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">White Orchid Leaf</div><div class="stock-desc">Balances sebum, soothes anxiety, lowers blood - pressure, regulates respiration and skin</div><div class="stock-price"><span>¥870</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Daidai Leaf</div><div class="stock-desc">Calms, anti - anxiety, reduces phlegm, aids digestion, promotes qi and blood flow</div><div class="stock-price"><span>¥870</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lemongrass</div><div class="stock-desc">Antibacterial, repels mosquitoes, relieves pain, aids digestion, refreshes and deodorizes</div><div class="stock-price"><span>¥630</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Dill Herb</div><div class="stock-desc">Promotes digestion, antibacterial, relieves spasms, calms and soothes</div><div class="stock-price"><span>¥1090</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Patchouli (Left)</div><div class="stock-desc">Antibacterial, skin - repairing, relieves pain, respiratory care, relaxes emotions</div><div class="stock-price"><span>¥630</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Melissa</div><div class="stock-desc">Soothes nerves and emotions, relieves headaches, improves sleep, eases skin sensitivity</div><div class="stock-price"><span>¥1560</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Oregano</div><div class="stock-desc">Antibacterial, boosts immunity, improves respiratory problems, anti - inflammatory and analgesic, aids digestion</div><div class="stock-price"><span>¥462</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Valerian Oil</div><div class="stock-desc">Calms nerves, aids sleep, anti - anxiety, relieves muscle soreness, eases study stress</div><div class="stock-price"><span>¥2200</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Mugwort</div><div class="stock-desc">Warms meridians, antibacterial, relieves muscle soreness</div><div class="stock-price"><span>¥240</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🍊 二、柑橘</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lemon</div><div class="stock-desc">Refreshes, purifies air, aids digestion, boosts immunity, whitens skin</div><div class="stock-price"><span>¥740</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lemon Verbena</div><div class="stock-desc">Boosts mood, soothes tension, aids digestion, relieves bloating, controls oil, relaxes muscles</div><div class="stock-price"><span>¥583</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Bergamot</div><div class="stock-desc">Anti - anxiety and depression, antibacterial, balances oil, improves digestion</div><div class="stock-price"><span>¥780</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Grapefruit</div><div class="stock-desc">Refreshes, aids digestion, diuretic, anti - depression</div><div class="stock-price"><span>¥1860</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sweet Pomelo</div><div class="stock-desc">Refreshes, aids digestion, diuretic, anti - depression</div><div class="stock-price"><span>¥1230</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Red Mandarin (Cold Pressed)</div><div class="stock-desc">Aids digestion, soothes nerves, improves pale complexion, photosensitive</div><div class="stock-price"><span>¥540</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Red Mandarin</div><div class="stock-desc">Calms the mind, aids sleep, promotes digestion, skincare - gentle for kids, boosts mood</div><div class="stock-price"><span>¥345</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Petitgrain</div><div class="stock-desc">Calms and relaxes, anti - anxiety, antibacterial, regulates sebum, anti - inflammatory</div><div class="stock-price"><span>¥1220</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sweet Orange</div><div class="stock-desc">Boosts mood, aids digestion, soothes anxiety, antibacterial, promotes collagen production</div><div class="stock-price"><span>¥198</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lime</div><div class="stock-desc">Boosts mood, anti - depression, purifies air, antibacterial, deodorizes, aids digestion</div><div class="stock-price"><span>¥730</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Litsea Cubeba</div><div class="stock-desc">Antibacterial, anti - inflammatory, repels insects, soothes mood, aids digestion</div><div class="stock-price"><span>¥790</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Neroli</div><div class="stock-desc">Anti - anxiety, aids sleep, soothes emotions, promotes cell regeneration, skincare</div><div class="stock-price"><span>¥8800</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Neroli (Domestic)</div><div class="stock-desc">Anti - anxiety, aids sleep, soothes emotions, promotes cell regeneration, skincare</div><div class="stock-price"><span>¥1239</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🌲 三、木质</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Tea Tree</div><div class="stock-desc">Broad - spectrum antibacterial, antiviral, boosts immunity, purifies air, treats acne</div><div class="stock-price"><span>¥395</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Eucalyptus</div><div class="stock-desc">Antiviral, relieves cough, eases nasal congestion, repels insects, refreshes mind</div><div class="stock-price"><span>¥425</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Pine Needle</div><div class="stock-desc">Antioxidant, antibacterial, anti - inflammatory, boosts spirit, relieves respiratory discomfort</div><div class="stock-price"><span>¥480</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Ravensara</div><div class="stock-desc">Respiratory care, refreshes mind, gently relieves cough</div><div class="stock-price"><span>¥1138</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rosewood</div><div class="stock-desc">Anti - inflammatory, antibacterial, boosts immunity, anti - depression and anxiety, promotes skin regeneration</div><div class="stock-price"><span>¥3530</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Cypress</div><div class="stock-desc">Astringent, improves circulation, relieves varicose veins, reduces fluid retention, controls oil</div><div class="stock-price"><span>¥620</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Cedarwood (Atlas)</div><div class="stock-desc">Anti - inflammatory, antibacterial, soothes anxiety, improves respiration, astringent for skin, promotes hair health</div><div class="stock-price"><span>¥480</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Juniper Berry</div><div class="stock-desc">Detoxifies, diuretic, reduces edema, purifies skin, improves acne, relieves muscle soreness</div><div class="stock-price"><span>¥2970</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sandalwood (White)</div><div class="stock-desc">Calming, anti - inflammatory, skin - caring, antibacterial, aphrodisiac, soothes nerves for meditation</div><div class="stock-price"><span>¥1680</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sandalwood (E. Indian)</div><div class="stock-desc">Skin - caring, anti - aging, calming, relaxing, sleep - aiding, antibacterial, promotes hair growth</div><div class="stock-price"><span>¥25200</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sandalwood (80yr Aged)</div><div class="stock-desc">The older, the更香. Calming, anti - inflammatory, skin - moisturizing, fixes scent for meditation</div><div class="stock-price"><span>¥48600</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Agarwood</div><div class="stock-desc">Calms nerves for sleep, anti - anxiety and depression, positive energy soothing, anti - inflammatory, relieves pain</div><div class="stock-price"><span>¥14300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Agarwood (Qinan)</div><div class="stock-desc">Calms nerves for sleep, anti - anxiety and depression, positive energy soothing, anti - inflammatory, relieves pain</div><div class="stock-price"><span>¥38000</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Wintergreen (Natural)</div><div class="stock-desc">Relieves musculoskeletal pain, anti - inflammatory, relaxes muscles and bones, promotes circulation, local anesthetic feeling</div><div class="stock-price"><span>¥380</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🌸 四、花朵</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lavender (Narrow Leaf)</div><div class="stock-desc">Calming for sleep, relieves stress, clears heat and toxins, antibacterial and anti - inflammatory, improves headache</div><div class="stock-price"><span>¥980</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Lavender (Spike)</div><div class="stock-desc">Strong scent, antibacterial, expectorant, clears nose, promotes wound healing, relieves muscle soreness</div><div class="stock-price"><span>¥480</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Everlasting (Bracted)</div><div class="stock-desc">Powerful anti - inflammatory for respiratory tract, immune regulation, anti - allergic, skin anti - inflammatory and repair, analgesic</div><div class="stock-price"><span>¥16490</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Chamomile (Roman)</div><div class="stock-desc">Soothes nerves, relieves sensitivity, improves insomnia, relieves muscle pain</div><div class="stock-price"><span>¥23000</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Chamomile (German)</div><div class="stock-desc">Anti - inflammatory, promotes wound healing, anti - allergic, soothes skin</div><div class="stock-price"><span>¥23600</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Geranium</div><div class="stock-desc">Balances oil, relieves stress, antibacterial and anti - inflammatory, improves circulation, regulates hormones</div><div class="stock-price"><span>¥1950</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Neroli</div><div class="stock-desc">Anti - anxiety, aids sleep, soothes emotions, promotes cell regeneration, skincare</div><div class="stock-price"><span>¥8800</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Neroli (Domestic)</div><div class="stock-desc">Anti - anxiety, aids sleep, soothes emotions, promotes cell regeneration, skincare</div><div class="stock-price"><span>¥1239</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Ylang Ylang</div><div class="stock-desc">Relaxes nerves, regulates mood, cares for skin, balances oil</div><div class="stock-price"><span>¥980</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Bulgarian)</div><div class="stock-desc">High - active ingredients, regulates mood and stress, antioxidant and anti - aging, regulates female endocrine</div><div class="stock-price"><span>¥55000</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Bulgarian Elegant)</div><div class="stock-desc">Soothes mood, nourishes skin, balances oil, relieves stress and tension, regulates female endocrine</div><div class="stock-price"><span>¥35200</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Moroccan)</div><div class="stock-desc">Moisturizes, repairs, anti - oxidizes, regulates hormones and mood, soothes sensitive skin and menstrual discomfort</div><div class="stock-price"><span>¥26200</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Turkish)</div><div class="stock-desc">Skincare, anti - aging, balances hormones, soothes mood, improves insomnia</div><div class="stock-price"><span>¥28400</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Damask A)</div><div class="stock-desc">Repairs broken capillaries, soothes mood, balances oil</div><div class="stock-price"><span>¥26000</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Damask B)</div><div class="stock-desc">Mild scent, soothes emotions, moisturizes and repairs, relieves anxiety</div><div class="stock-price"><span>¥1100</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (English)</div><div class="stock-desc">Rich in active ingredients, skincare, regulates female functions, soothes mood, anti - inflammatory</div><div class="stock-price"><span>¥1890</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (White, French)</div><div class="stock-desc">Regulates endocrine, nourishes facial skin, soothes mood, eases menstrual discomfort</div><div class="stock-price"><span>¥7700</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rose (Synthetic)</div><div class="stock-desc">Relaxes mood, moisturizes skin, with a mild and sweet scent</div><div class="stock-price"><span>¥683</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Clove Bud</div><div class="stock-desc">Powerful pain - relieving, antibacterial, anti - inflammatory, aids digestion, anesthetic, anti - oxidizing</div><div class="stock-price"><span>¥1380</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Jasmine (Premium)</div><div class="stock-desc">Antidepressant, boosts pleasure, aphrodisiac, skincare, eases menstrual pain, relaxes body and mind</div><div class="stock-price"><span>¥27000</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Jasmine (Small Flower) Absolute</div><div class="stock-desc">Regulates hormones, firms skin, antidepressant, aphrodisiac, helps with childbirth, boosts mood</div><div class="stock-price"><span>¥19400</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🌶️ 五、辛香</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Fennel</div><div class="stock-desc">Aids digestion, soothes bloating, anti - bacterial, anti - inflammatory, relieves spasms, regulates endocrine</div><div class="stock-price"><span>¥540</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Cinnamon</div><div class="stock-desc">Warms yang, dispels cold, promotes blood circulation, relieves muscle soreness, antibacterial, anti - inflammatory, boosts immunity, regulates mood</div><div class="stock-price"><span>¥565</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Cinnamon (Refined)</div><div class="stock-desc">Antibacterial, warms body, promotes circulation, relieves muscle soreness, boosts yang qi, aids digestion</div><div class="stock-price"><span>¥3800</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Nutmeg</div><div class="stock-desc">Warms middle - jiao, dispels cold, relieves pain, antibacterial, aids digestion, warms body, relieves muscle pain</div><div class="stock-price"><span>¥1100</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Black Pepper</div><div class="stock-desc">Warms stomach, aids digestion, promotes circulation, burns fat, relieves muscle soreness, invigorates body and mind</div><div class="stock-price"><span>¥3190</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Ginger Oil</div><div class="stock-desc">Warms the body, promotes circulation, relieves inflammation and pain, aids digestion, antioxidant</div><div class="stock-price"><span>¥1300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Ginger (Supercritical CO2)</div><div class="stock-desc">Warms the body, anti - inflammatory, relieves pain, promotes circulation, antibacterial and antioxidant</div><div class="stock-price"><span>¥1620</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Mustard</div><div class="stock-desc">Appetizing, antibacterial, beneficial to five organs, skin - caring, relieves depression, prevents high blood lipids</div><div class="stock-price"><span>¥760</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🌰 六、种子</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Celery Seed</div><div class="stock-desc">Lowers uric acid and blood pressure, antioxidant, antibacterial, liver - protecting, anti - inflammatory, diuretic</div><div class="stock-price"><span>¥1960</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Carrot Seed Oil</div><div class="stock-desc">Nourishes liver, detoxifies, anti - aging for skin, repairs skin, regulates hormones, purifies body</div><div class="stock-price"><span>¥4300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Dill Seed</div><div class="stock-desc">Aids digestion, relieves gastrointestinal spasms, calms nerves, promotes lactation, antibacterial and antioxidant</div><div class="stock-price"><span>¥1450</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Coriander Seed</div><div class="stock-desc">Promotes digestion, relieves flatulence, antibacterial and antioxidant, soothes joint pain, warms body and mind</div><div class="stock-price"><span>¥1850</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🪔 七、树脂</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Camphor Oil</div><div class="stock-desc">Refreshes mind, relieves pain and muscle discomfort, antibacterial, repels insects, strengthens heart and promotes circulation</div><div class="stock-price"><span>¥265</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Myrrh</div><div class="stock-desc">Anti - inflammatory, antibacterial, promotes wound healing, astringent, expectorant, blood - activating, anti - aging</div><div class="stock-price"><span>¥3840</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Benzoin</div><div class="stock-desc">Calms emotions, moisturizes skin, clears respiratory tract, promotes wound healing</div><div class="stock-price"><span>¥1100</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Frankincense</div><div class="stock-desc">Anti - inflammatory and relieves pain, promotes cell regeneration, relieves anxiety, deepens breathing, astringent for skin</div><div class="stock-price"><span>¥1180</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>🧴 八、基础</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Grapeseed Oil (Refined)</div><div class="stock-desc">Rich in antioxidants, anti - aging, refreshing and moisturizing, skin and hair care, a base oil for massage</div><div class="stock-price"><span>¥68</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Grapeseed Oil</div><div class="stock-desc">Rich in antioxidants, anti - aging, refreshing and moisturizing, skin and hair care</div><div class="stock-price"><span>¥45</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Olive Oil A (Cold Pressed)</div><div class="stock-desc">Moisturizes, anti - wrinkle for hair, soothes skin, sun protection against dark spots</div><div class="stock-price"><span>¥125</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Olive Oil B</div><div class="stock-desc">Moisturizes, anti - wrinkle for hair, soothes skin, sun protection against dark spots</div><div class="stock-price"><span>¥93</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Evening Primrose Oil</div><div class="stock-desc">Regulates endocrine, relieves menstrual discomfort, anti - inflammatory for skin, lowers lipids and protects heart</div><div class="stock-price"><span>¥160</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sweet Almond Oil</div><div class="stock-desc">Moisturizes and anti - oxidizes, relieves skin dryness, skin - friendly and easily absorbed, for all skin types</div><div class="stock-price"><span>¥96</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Jojoba Oil</div><div class="stock-desc">Prevents wrinkles, softens skin, dissolves and expels blackheads, strong penetration for clear skin</div><div class="stock-price"><span>¥220</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Wheat Germ Oil</div><div class="stock-desc">High - concentration vitamin E, powerful anti - oxidant, delays aging, moisturizes skin, hair care, improves blood lipids</div><div class="stock-price"><span>¥140</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rosehip Oil</div><div class="stock-desc">Promotes skin regeneration, effective for scar healing, burns, sunburns, eczema and skin aging</div><div class="stock-price"><span>¥480</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Camellia Seed (Wild)</div><div class="stock-desc">Powerful anti - oxidant, delays skin aging, moisturizes and repairs skin, hair care</div><div class="stock-price"><span>¥60</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Aloe Vera Oil</div><div class="stock-desc">Moisturizes and locks water, anti - inflammatory and antibacterial, promotes healing, balances oil, repairs skin</div><div class="stock-price"><span>¥108</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Safflower Oil</div><div class="stock-desc">Lowers blood lipids, softens blood vessels, beautifies, relieves constipation, anti - oxidant</div><div class="stock-price"><span>¥48</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Coconut Oil (Cold Pressed)</div><div class="stock-desc">Moisturizes skin and hair, anti - oxidant, emollient, aids energy metabolism</div><div class="stock-price"><span>¥129</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Kukui Nut / Inca Inchi</div><div class="stock-desc">Deeply moisturizes and repairs skin barrier, soothes allergic and inflammatory skin</div><div class="stock-price"><span>¥490</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Meadowfoam Seed</div><div class="stock-desc">Extremely stable, strengthens skin barrier, anti - oxidant and anti - inflammatory, skin - friendly and non - comedogenic</div><div class="stock-price"><span>¥93</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sesame Seed Oil (Cold Pressed)</div><div class="stock-desc">Rich in vitamin E, awakens skin potential, keeps skin tender</div><div class="stock-price"><span>¥68</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sea Buckthorn Fruit Oil</div><div class="stock-desc">Deeply nourishes, repairs skin barrier, reduces UV pollution, promotes local blood circulation</div><div class="stock-price"><span>¥380</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Borage Oil</div><div class="stock-desc">A favorite for female massage, rich in GLA, regulates endocrine, soothes inflammation, skin care, relieves menstrual discomfort</div><div class="stock-price"><span>¥480</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Prickly Pear Seed Oil</div><div class="stock-desc">The hyaluronic acid in the plant world, firms and resists skin aging, sun - protection, anti - inflammatory, anti - erythema</div><div class="stock-price"><span>¥1963</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Green Coffee Oil</div><div class="stock-desc">Aids in weight - loss and energizing. No coffee smell. Reduces eye puffiness, base oil for eye formulas.</div><div class="stock-price"><span>¥1841</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">St. John's Wort Oil</div><div class="stock-desc">Infused. Anti - inflammatory, antibacterial. Promotes skin repair, relieves nerve pain, improves mood. Note photosensitivity.</div><div class="stock-price"><span>¥220</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Calendula Oil</div><div class="stock-desc">Infused. Soothes dry and inflamed skin, relieves muscle fatigue, deeply nourishes skin.</div><div class="stock-price"><span>¥280</span><span class="stock-unit">/公升</span></div></div></div></div><div class="stock-cat"><h3>💊 九、药用</h3><div class="stock-list"><div class="stock-item"><div class="stock-name">----------</div><div class="stock-desc">------</div><div class="stock-price"><span>---------</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Angelica (Chinese)</div><div class="stock-desc">Promotes local blood circulation, removes blood stasis, helps relieve menstrual and joint pain, promotes qi flow.</div><div class="stock-price"><span>¥1980</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Melissa</div><div class="stock-desc">Soothes nerves and emotions, relieves headaches, improves sleep, eases skin sensitivity</div><div class="stock-price"><span>¥1560</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Magnolia Flower</div><div class="stock-desc">Anti - inflammatory, anti - allergic. Clears nasal passages, treats rhinitis and sinusitis, protects respiratory system, dispels cold.</div><div class="stock-price"><span>¥2700</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Dalbergia</div><div class="stock-desc">Promotes qi flow, relieves pain, activates blood and stops bleeding, protects myocardium, antibacterial.</div><div class="stock-price"><span>¥700</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Patchouli</div><div class="stock-desc">Refreshes the mind, astringent and firming, antifungal, promotes cell regeneration</div><div class="stock-price"><span>¥980</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Cumin</div><div class="stock-desc">Antioxidant, antibacterial. Aids digestion, lowers blood sugar.</div><div class="stock-price"><span>¥1300</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Saffron</div><div class="stock-desc">Removes blood stasis, cools blood and detoxifies, relieves depression and soothes nerves, regulates mood.</div><div class="stock-price"><span>¥1660</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sichuan Pepper</div><div class="stock-desc">Warms the middle - jiao, relieves pain, dispels cold and dampness, antibacterial and insecticidal, antioxidant.</div><div class="stock-price"><span>¥1400</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Panax Notoginseng</div><div class="stock-desc">Removes blood stasis, reduces swelling and relieves pain, relaxes tendons and activates collaterals, dispels wind and dampness.</div><div class="stock-price"><span>¥2160</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Musk</div><div class="stock-desc">Opens orifices and restores consciousness, activates blood and relieves pain, induces labor, anti - inflammatory, reduces swelling.</div><div class="stock-price"><span>¥1560</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Coix Seed</div><div class="stock-desc">Lowers blood lipids, whitens and fades spots, strengthens the spleen and dispels dampness, enhances immunity.</div><div class="stock-price"><span>¥1720</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Atractylodes</div><div class="stock-desc">Strengthens the spleen and replenishes qi, regulates the gastrointestinal tract, anti - inflammatory and antioxidant.</div><div class="stock-price"><span>¥920</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Reishi / Lingzhi</div><div class="stock-desc">Antioxidant, protects the liver, enhances immunity, delays aging.</div><div class="stock-price"><span>¥1160</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Fenugreek</div><div class="stock-desc">Regulates hormones, promotes lactation, antioxidant, stabilizes blood sugar, relieves menstrual discomfort.</div><div class="stock-price"><span>¥1400</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Tarragon</div><div class="stock-desc">Antispasmodic, aids digestion, regulates menstruation, anti - inflammatory, antibacterial, nerve - soothing</div><div class="stock-price"><span>¥2600</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Sea Buckthorn Seed</div><div class="stock-desc">Antioxidant, promotes healing, protects cardiovascular system, regulates immunity, beautifies skin</div><div class="stock-price"><span>¥1400</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Hyssop</div><div class="stock-desc">Expectorant, antitussive, antiviral, regulates menstruation, relieves rheumatism, boosts spirit</div><div class="stock-price"><span>¥5800</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Perilla</div><div class="stock-desc">Antioxidant, antibacterial, anti - inflammatory, calming, skin - caring, memory - enhancing</div><div class="stock-price"><span>¥700</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Caraway Seed</div><div class="stock-desc">Aids digestion, carminative, stomach - strengthening, antioxidant, relieves flatulence, anti - asthmatic and antitussive</div><div class="stock-price"><span>¥1360</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Baeckea</div><div class="stock-desc">Aids digestion, carminative, stomach - strengthening, antioxidant, relieves flatulence, anti - asthmatic and antitussive</div><div class="stock-price"><span>¥390</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Bay Leaf (Cinnamon Leaf)</div><div class="stock-desc">Antibacterial, antiviral, antispasmodic, promotes digestion, enhances immunity</div><div class="stock-price"><span>¥860</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Vitex / Chaste Tree</div><div class="stock-desc">Expectorant, antitussive, anti - asthmatic, for chronic bronchitis</div><div class="stock-price"><span>¥880</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Labrador Tea</div><div class="stock-desc">Antibacterial, anti - inflammatory, antitussive, anti - radiation, liver - protecting, promotes transdermal absorption</div><div class="stock-price"><span>¥660</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Dill (Herb)</div><div class="stock-desc">Aids digestion, stomach - strengthening, antibacterial, antioxidant, calming, promotes lactation</div><div class="stock-price"><span>¥1660</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Peppermint (Thin Leaf)</div><div class="stock-desc">Refreshes mind, relieves indigestion, relieves pain, cools skin, antibacterial, anti - inflammatory</div><div class="stock-price"><span>¥880</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Rhododendron</div><div class="stock-desc">Anti - inflammatory, relieves pain, anti - rheumatic, boosts immunity, clears mind, uplifts mood, strengthens joints</div><div class="stock-price"><span>¥11550</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Camphor Eucalyptus</div><div class="stock-desc">Antiviral, relieves cold and cough, enhances immunity, soothes muscles, uplifts mood</div><div class="stock-price"><span>¥376</span><span class="stock-unit">/公升</span></div></div><div class="stock-item"><div class="stock-name">Valerian</div><div class="stock-desc">Calming, improves insomnia, anti - anxiety, relieves muscle pain</div><div class="stock-price"><span>¥2900</span><span class="stock-unit">/公升</span></div></div></div></div></div>
+    <div style="text-align:center;margin:20px 0;font-size:12px;color:#8a7a65">📄 <a href="#" style="color:#b8944e" data-i18n="stockDl">تحميل قائمة الأسعار الكاملة ←</a></div>
+  </div>
+</div>
+
+<div class="page" id="page-contact">
+  <div class="container" style="padding-top:100px;text-align:center">
+    <h2 class="sec-t" data-i18n="ctT">اتصل بنا</h2>
+    <div class="sec-l"></div>
+    <p class="sec-s" data-i18n="ctS">نتطلع إلى تواصلك</p>
+    <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:8px;border:1px solid rgba(180,150,100,0.1);padding:40px">
+      <p style="font-size:14px;color:#5a4a35;margin-bottom:12px" data-i18n="ctLoc">📍 قوانغتشو، الصين</p>
+      <p style="font-size:14px;color:#5a4a35;margin-bottom:12px">📞 15919334313</p>
+      <p style="font-size:14px;color:#5a4a35;margin-bottom:24px" data-i18n="ctNote">للكتالوجات والاستفسارات</p>
+      <button class="btn btn-primary" onclick="openInquiry('询价')" data-i18n="ctaBtn">استفسر الآن ←</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <span data-i18n="fBrand">فانغتينغ · أورينت فراغرانس ساينس</span>. <span data-i18n="fRig">جميع الحقوق محفوظة</span></p>
+</footer>
+
+<script>
+
+function openInquiry(type){
+  document.getElementById('inqMask').style.display='flex';
+  document.getElementById('inqFormWrap').style.display='block';
+  document.getElementById('inqOkWrap').style.display='none';
+  document.getElementById('inqName').value='';
+  document.getElementById('inqPhone').value='';
+  document.getElementById('inqMsg').value='';
+  const sel=document.getElementById('inqType');
+  let matched=false;
+  if(type){[...sel.options].forEach(o=>{if(o.value===type){sel.value=type;matched=true}});}
+  if(!matched)sel.selectedIndex=0;
+}
+function closeInquiry(){document.getElementById('inqMask').style.display='none'}
+function submitInquiry(){
+  const name=document.getElementById('inqName').value.trim();
+  const phone=document.getElementById('inqPhone').value.trim();
+  const type=document.getElementById('inqType').value;
+  const msg=document.getElementById('inqMsg').value.trim();
+  if(!name){document.getElementById('inqName').style.borderColor='#e74c3c';return}
+  if(!phone||phone.length<5){document.getElementById('inqPhone').style.borderColor='#e74c3c';return}
+  const btn=document.querySelector('.inq-submit');btn.disabled=true;btn.textContent='جارٍ الإرسال...';
+  fetch('https://ofs-asia-d9gk28pf5a4314791.service.tcloudbase.com/collect-lead',{
+    method:'POST',mode:'no-cors',
+    body:JSON.stringify({phone,name,type,msg,linggen:'官网咨询',source:'ofs-website'})
+  }).then(()=>{
+    document.getElementById('inqFormWrap').style.display='none';
+    document.getElementById('inqOkWrap').style.display='block';
+    btn.disabled=false;btn.textContent='إرسال';
+  }).catch(()=>{
+    document.getElementById('inqFormWrap').style.display='none';
+    document.getElementById('inqOkWrap').style.display='block';
+    btn.disabled=false;btn.textContent='إرسال';
+  });
+}
+
+function toggleMenu(e){
+  if(e)e.stopPropagation();
+  document.querySelector('.nav-links').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
+  document.querySelector('.nav-links').classList.remove('open');
+}));
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const map={home:0,products:1,services:2,about:3,contact:4};
+  document.querySelectorAll('.nav-links a')[map[page]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'})
+}
+function toggleCard(el){el.classList.toggle('expanded')}
+let gi=0;
+const carouselTrack=document.getElementById('carouselTrack');
+const carouselSlides=document.querySelectorAll('.carousel-slide');
+const carouselDots=document.getElementById('carouselDots');
+const carouselCount=carouselSlides.length;
+let carouselTimer=null;
+// 动态生成圆点
+if(carouselDots){
+  for(let i=0;i<carouselCount;i++){
+    const d=document.createElement('button');
+    d.className='carousel-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.onclick=()=>carouselGo(i);
+    carouselDots.appendChild(d);
+  }
+}
+function carouselGo(i){
+  if(!carouselTrack||!carouselCount)return;
+  gi=((i%carouselCount)+carouselCount)%carouselCount;
+  const rtl=document.documentElement.dir==='rtl';
+  carouselTrack.style.transform='translateX('+(rtl?'':' -')+(gi*100)+'%)';
+  document.querySelectorAll('.carousel-dot').forEach((d,k)=>d.classList.toggle('active',k===gi));
+  restartCarousel();
+}
+function restartCarousel(){clearInterval(carouselTimer);carouselTimer=setInterval(()=>carouselGo(gi+1),5000)}
+// 触摸滑动
+let touchX=null;
+const carouselEl=document.getElementById('carousel');
+if(carouselEl){
+  carouselEl.addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;clearInterval(carouselTimer)},{passive:true});
+  carouselEl.addEventListener('touchend',e=>{
+    if(touchX===null)return;
+    const dx=e.changedTouches[0].clientX-touchX;
+    if(Math.abs(dx)>40){const rtl=document.documentElement.dir==='rtl';carouselGo(gi+(rtl?(-dx>0?1:-1):(dx<0?1:-1)))}
+    touchX=null;restartCarousel();
+  },{passive:true});
+  carouselEl.addEventListener('mouseenter',()=>clearInterval(carouselTimer));
+  carouselEl.addEventListener('mouseleave',restartCarousel);
+}
+restartCarousel();
+
+function filterStock(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.stock-cat').forEach(c=>{
+    let show=false;
+    c.querySelectorAll('.stock-item').forEach(i=>{
+      const match=i.querySelector('.stock-name').textContent.toLowerCase().includes(q);
+      i.style.display=match?'':'none';
+      if(match)show=true;
+    });
+    c.classList.toggle('open',show||q.length>0);
+    if(!q)c.classList.remove('open');
+  })
+}
+document.querySelectorAll('.stock-cat h3').forEach(h=>h.onclick=function(){this.parentElement.classList.toggle('open')});
+
+function galleryGo(i){
+  gi=i;
+  document.querySelectorAll('.gallery-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
+  document.getElementById('galleryTrack').style.transform='translateX(-'+(i*100)+'%)'
+}</script>
+
+<!-- 咨询/报价弹窗 -->
+<div class="inq-mask" id="inqMask" onclick="if(event.target===this)closeInquiry()">
+  <div class="inq-modal">
+    <button class="inq-close" onclick="closeInquiry()">×</button>
+    <div id="inqFormWrap">
+      <h3 id="inqTitle">اطلب عرض سعر / شراكة</h3>
+      <div class="inq-sub" id="inqSub">اترك معلوماتك، فريقنا بخبرة 25 عامًا سيرد خلال 24 ساعة</div>
+      <div class="inq-row">
+        <input id="inqName" placeholder="الاسم *" type="text">
+        <input id="inqPhone" placeholder="الهاتف/واتساب *" type="tel" maxlength="20">
+      </div>
+      <select id="inqType">
+        <option value="报价">اطلب عرض سعر (زيوت/كتالوج)</option><option value="合作">شراكة علامة / OEM·ODM</option><option value="调香">عطر مخصص / تطوير تركيبة</option><option value="其他">استفسارات أخرى</option>
+      </select>
+      <textarea id="inqMsg" placeholder="رسالة (اختياري)"></textarea>
+      <button class="inq-submit" onclick="submitInquiry()">إرسال</button>
+      <div class="inq-contacts">
+        تواصل: <b>واتساب/هاتف 15919334313</b> · 19539341349<br>العنوان: قوانغتشو بايون سنتر 2F#2327<br>البريد: <b>ofs@fangting.com</b>
+      </div>
+    </div>
+    <div class="inq-ok" id="inqOkWrap">
+      <div class="ok-icon">✅</div>
+      <div class="ok-title">تم استلام استفسارك</div>
+      <div class="ok-sub">سنتواصل معك قريبًا!<br>للاستعجال: <b>15919334313</b></div>
+      <button class="inq-submit" style="margin-top:14px" onclick="closeInquiry()">حسنًا</button>
+    </div>
+  </div></div>
+
+</body></html>
