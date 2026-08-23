@@ -612,7 +612,10 @@ function openInquiry(type){
   document.getElementById('inqName').value='';
   document.getElementById('inqPhone').value='';
   document.getElementById('inqMsg').value='';
-  if(type){const sel=document.getElementById('inqType');[...sel.options].forEach(o=>{if(o.value===type)sel.value=type});}
+  const sel=document.getElementById('inqType');
+  let matched=false;
+  if(type){[...sel.options].forEach(o=>{if(o.value===type){sel.value=type;matched=true}});}
+  if(!matched)sel.selectedIndex=0;
 }
 function closeInquiry(){document.getElementById('inqMask').style.display='none'}
 function submitInquiry(){
