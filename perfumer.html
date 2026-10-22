@@ -211,7 +211,8 @@ function calc(){
     lines.push({cn:it.cn, en:it.en, u:u, q:q, amt:up*q});
   });
   document.getElementById('sum').innerHTML = money(sum) + '<small>' + (UNIT===30?'30ml 支':'1L 桶') + '</small>';
-  document.getElementById('cnt').textContent = cnt ? ('已选 '+lines.length+' 款 · '+cnt+' 件') : '未选';
+  var kinds=lines.filter(function(l){return !l.gift;}).length;
+  document.getElementById('cnt').textContent = cnt ? ('已选 '+kinds+' 款 · '+cnt+' 件') : '未选';
   window.__cart = {sum:sum, cnt:cnt, lines:lines};
 }
 document.addEventListener('click', function(e){
@@ -254,65 +255,96 @@ document.getElementById('open').onclick=function(){
   document.getElementById('sheet').classList.add('on');
 };
 document.getElementById('close').onclick=function(){ document.getElementById('sheet').classList.remove('on'); };
-function drawPDF(){
-  var c=window.__cart||{sum:0,lines:[]}, W=1240,H=1754,M=90;
-  var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
-  var g=cv.getContext('2d'), F='"PingFang SC","Hiragino Sans GB",sans-serif';
-  g.fillStyle='#fff'; g.fillRect(0,0,W,H); var y=M;
-  g.fillStyle='#23443a'; g.font='600 48px '+F; g.fillText('芳廷 · 调香师套装订单', M, y+26); y+=54;
-  g.font='23px '+F; g.fillStyle='#6b7d74'; g.fillText('单方精油套组 ｜ 出厂价，不含税运', M, y+6); y+=38;
-  g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,3); y+=34;
+function drawPages(){
+  var c=window.__cart||{sum:0,lines:[]};
+  var items=c.lines.filter(function(l){return !l.gift;});
+  var gifts=c.lines.filter(function(l){return l.gift;});
+  var W=1240,H=1754,M=90,rowH=44,perPage=18;
+  var F='"PingFang SC","Hiragino Sans GB",sans-serif';
+  var total=Math.max(1,Math.ceil(items.length/perPage));
   var no='FR-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000+1000));
-  g.fillStyle='#1f2a26'; g.font='23px '+F; g.fillText('订单号：'+no, M, y); y+=32;
-  g.fillText('日期：'+new Date().toLocaleDateString('zh-CN'), M, y); y+=44;
-  var rowH=42, maxRows=16;
-  g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,rowH); g.fillStyle='#fff'; g.font='600 22px '+F;
-  g.fillText('产品', M+14, y+28); g.fillText('规格', M+520, y+28); g.fillText('数量', M+700, y+28);
-  g.textAlign='right'; g.fillText('金额', W-M-14, y+28); g.textAlign='left'; y+=rowH;
-  c.lines.slice(0,maxRows).forEach(function(l,i){
-    if(i%2){ g.fillStyle='#f7f8f4'; g.fillRect(M,y,W-2*M,rowH); }
-    g.fillStyle='#1f2a26'; g.font='22px '+F; g.fillText(l.cn, M+14, y+27);
-    g.fillText(l.gift?'赠品':(l.u===1000?'1L':(l.u+'ml')), M+520, y+27); g.fillText(String(l.q), M+700, y+27);
-    g.textAlign='right'; g.fillText(money(l.amt), W-M-14, y+27); g.textAlign='left'; y+=rowH;
-  });
-  if(c.lines.length>maxRows){ g.fillStyle='#8b9a90'; g.font='20px '+F; g.fillText('… 另有 '+(c.lines.length-maxRows)+' 款', M+14, y+22); y+=30; }
-  y+=16; g.font='600 30px '+F; g.fillStyle='#23443a'; g.fillText('合计', M+760, y);
-  g.textAlign='right'; g.fillText(money(c.sum), W-M-14, y); g.textAlign='left'; y+=30;
-  g.font='19px '+F; g.fillStyle='#6b7d74'; g.textAlign='right'; g.fillText('出厂价，不含税运（开票 +13%）', W-M-14, y); g.textAlign='left'; y+=40;
-  g.fillText('赠品：闻香纸 100 张 · 3ml 滴管瓶 100 支 · 5ml 精油瓶 20 套 · 香调轮盘卡(电子版) · 空白标签 · 电子手册 · 订制调香木架 · 玻璃滴管(按瓶数)', M, y);
-  y=H-110; g.fillStyle='#d8ddd6'; g.fillRect(M,y,W-2*M,1); y+=30;
-  g.font='19px '+F; g.fillStyle='#6b7d74';
-  g.fillText('广州芳廷芳香科技有限公司 · 广州瑂诺丝化妆品有限公司', M, y); y+=26;
-  g.fillText('白云里国际美妆中心 2 楼 2327 ｜ 李小姐 195 3934 1349 · 陈先生 159 1933 4313', M, y);
-  return {cv:cv,no:no};
+  var pages=[];
+  for(var pi=0;pi<total;pi++){
+    var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    var g=cv.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+    var y=M;
+    g.fillStyle='#23443a'; g.font='600 48px '+F;
+    g.fillText('芳廷 · 调香师套装订单'+(total>1?('（'+(pi+1)+'/'+total+'）'):''), M, y+26); y+=54;
+    g.font='23px '+F; g.fillStyle='#6b7d74'; g.fillText('单方精油套组 ｜ 出厂价，不含税运', M, y+6); y+=38;
+    g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,3); y+=34;
+    g.fillStyle='#1f2a26'; g.font='23px '+F;
+    g.fillText('订单号：'+no, M, y); y+=32;
+    g.fillText('日期：'+new Date().toLocaleDateString('zh-CN'), M, y); y+=44;
+    g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,rowH); g.fillStyle='#fff'; g.font='600 22px '+F;
+    g.fillText('产品', M+14, y+28); g.fillText('规格', M+520, y+28); g.fillText('数量', M+700, y+28);
+    g.textAlign='right'; g.fillText('金额', W-M-14, y+28); g.textAlign='left'; y+=rowH;
+    var chunk=items.slice(pi*perPage,(pi+1)*perPage);
+    chunk.forEach(function(l,i){
+      if(i%2){ g.fillStyle='#f7f8f4'; g.fillRect(M,y,W-2*M,rowH); }
+      g.fillStyle='#1f2a26'; g.font='22px '+F;
+      g.fillText(l.cn, M+14, y+27);
+      g.fillText(l.u===1000?'1L':(l.u+'ml'), M+520, y+27);
+      g.fillText(String(l.q), M+700, y+27);
+      g.textAlign='right'; g.fillText(money(l.amt), W-M-14, y+27); g.textAlign='left';
+      y+=rowH;
+    });
+    if(!items.length){ g.fillStyle='#8b9a90'; g.font='22px '+F; g.fillText('（未选产品）', M+14, y+27); y+=rowH; }
+    y+=24;
+    if(pi===total-1){
+      g.font='600 30px '+F; g.fillStyle='#23443a'; g.fillText('合计', M+760, y);
+      g.textAlign='right'; g.fillText(money(c.sum), W-M-14, y); g.textAlign='left'; y+=30;
+      g.font='19px '+F; g.fillStyle='#6b7d74'; g.textAlign='right';
+      g.fillText('出厂价，不含税运（开票 +13%）', W-M-14, y); g.textAlign='left'; y+=42;
+      if(gifts.length){
+        g.font='20px '+F; g.fillStyle='#6b7d74';
+        var gt='赠品：'+gifts.map(function(l){return l.cn+(l.q>1?('×'+l.q):'');}).join(' · ');
+        var maxw=W-2*M, line='', arr=[];
+        for(var ci=0;ci<gt.length;ci++){ var t2=line+gt[ci]; if(g.measureText(t2).width>maxw){ arr.push(line); line=gt[ci]; } else line=t2; }
+        if(line) arr.push(line);
+        arr.forEach(function(t3){ g.fillText(t3, M, y); y+=28; });
+      }
+    }
+    var fy=H-110; g.fillStyle='#d8ddd6'; g.fillRect(M,fy,W-2*M,1);
+    g.font='19px '+F; g.fillStyle='#6b7d74';
+    g.fillText('广州芳廷芳香科技有限公司 · 广州瑂诺丝化妆品有限公司', M, fy+30);
+    g.fillText('白云里国际美妆中心 2 楼 2327 ｜ 李小姐 195 3934 1349 · 陈先生 159 1933 4313', M, fy+56);
+    pages.push(cv);
+  }
+  return {pages:pages, no:no};
 }
-function buildPDF(canvas){
-  var d=canvas.toDataURL('image/jpeg',0.92), b64=d.split(',')[1], bin=atob(b64);
-  var img=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) img[i]=bin.charCodeAt(i);
-  var w=canvas.width,h=canvas.height,PW=595.28,PH=841.89,parts=[],off={},pos=0;
+function buildPDF(pages){
+  var parts=[],offs={},pos=0,n=pages.length,PW=595.28,PH=841.89;
   function put(s){var b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i)&255;parts.push(b);pos+=b.length;}
   function pb(u){parts.push(u);pos+=u.length;}
   put('%PDF-1.4\n');
-  off[1]=pos;put('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
-  off[2]=pos;put('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
-  off[3]=pos;put('3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n');
-  off[4]=pos;put('4 0 obj\n<< /Type /XObject /Subtype /Image /Width '+w+' /Height '+h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+img.length+' >>\nstream\n');
-  pb(img);put('\nendstream\nendobj\n');
-  var cs='q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q\n';
-  off[5]=pos;put('5 0 obj\n<< /Length '+cs.length+' >>\nstream\n'+cs+'endstream\nendobj\n');
-  var x=pos;put('xref\n0 6\n0000000000 65535 f \n');
-  for(var k=1;k<=5;k++) put(('0000000000'+off[k]).slice(-10)+' 00000 n \n');
-  put('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+x+'\n%%EOF\n');
+  var kids=[]; for(var i=0;i<n;i++) kids.push((3+i*2)+' 0 R');
+  offs[1]=pos; put('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  offs[2]=pos; put('2 0 obj\n<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>\nendobj\n');
+  for(var pi=0;pi<n;pi++){
+    var cv=pages[pi], pageObj=3+pi*2, imgObj=pageObj+1, contObj=1000+pi;
+    var dataUrl=cv.toDataURL('image/jpeg',0.9), b64=dataUrl.split(',')[1], bin=atob(b64);
+    var img=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++) img[k]=bin.charCodeAt(k);
+    offs[pageObj]=pos; put(pageObj+' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 '+imgObj+' 0 R >> >> /Contents '+contObj+' 0 R >>\nendobj\n');
+    offs[imgObj]=pos; put(imgObj+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+cv.width+' /Height '+cv.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+img.length+' >>\nstream\n');
+    pb(img); put('\nendstream\nendobj\n');
+    var cs='q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q\n';
+    offs[contObj]=pos; put(contObj+' 0 obj\n<< /Length '+cs.length+' >>\nstream\n'+cs+'endstream\nendobj\n');
+  }
+  var xref=pos, maxObj=1000+n;
+  put('xref\n0 '+(maxObj+1)+'\n0000000000 65535 f \n');
+  for(var o=1;o<=maxObj;o++){ put((offs[o]?('0000000000'+offs[o]).slice(-10):'0000000000')+' 00000 n \n'); }
+  put('trailer\n<< /Size '+(maxObj+1)+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF\n');
   return new Blob(parts,{type:'application/pdf'});
 }
 document.getElementById('pdf').onclick=function(){
   var c=window.__cart; if(!c||!c.lines.length){ toast('还没选产品'); return; }
   try{
-    var r=drawPDF(), url=URL.createObjectURL(buildPDF(r.cv)), a=document.createElement('a');
+    var r=drawPages(), url=URL.createObjectURL(buildPDF(r.pages)), a=document.createElement('a');
     a.href=url; a.download='芳廷调香师套装_'+r.no+'.pdf'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(function(){URL.revokeObjectURL(url);},4000); toast('已下载 PDF');
+    setTimeout(function(){URL.revokeObjectURL(url);},4000); toast('已下载 PDF（'+r.pages.length+' 页）');
   }catch(e){ toast('生成失败：'+e.message); }
 };
+
 renderChips(); renderList(true);
 </script>
 </body>
