@@ -259,7 +259,14 @@ function drawPages(){
   var c=window.__cart||{sum:0,lines:[]};
   var items=c.lines.filter(function(l){return !l.gift;});
   var gifts=c.lines.filter(function(l){return l.gift;});
-  var W=1240,H=1754,M=90,rowH=44,perPage=18;
+  var W=1240,H=1754,M=90,rowH=44;
+  // 自适应每页行数：按页眉高度 + 底部（页脚+合计/赠品区）实测计算
+  var perPage=(function(){
+    var probe=document.createElement('canvas').getContext('2d');
+    var y=M; y+=54; y+=38; y+=34; y+=32; y+=44; y+=rowH;   // 页眉+表头
+    var reserved=130+215;                                   // 页脚 + 合计/赠品
+    return Math.max(6, Math.floor((H-y-reserved)/rowH));
+  })();
   var F='"PingFang SC","Hiragino Sans GB",sans-serif';
   var total=Math.max(1,Math.ceil(items.length/perPage));
   var no='FR-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000+1000));
