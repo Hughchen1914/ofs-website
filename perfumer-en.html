@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#23443a">
+<title>Perfumer’s Kit · Order Online | OFS</title>
+<style>
+:root{--ink:#1f2a26;--muted:#5f7268;--line:#e2e6df;--bg:#fbfaf6;--green:#23443a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",sans-serif;padding-bottom:104px}
+.wrap{max-width:720px;margin:0 auto}
+header{background:linear-gradient(160deg,#26483c,#1b3229);color:#f6f3ea;padding:26px 18px 20px;text-align:center}
+header .kicker{font-size:11px;letter-spacing:4px;color:#b9cabf}
+header h1{font-family:Georgia,"Songti SC",serif;font-size:25px;margin:8px 0 4px;letter-spacing:2px}
+header .sub{font-size:12.5px;color:#cfdccf;letter-spacing:1px}
+header .expo{display:inline-block;margin-top:10px;font-size:11px;color:#e8dfc9;border:1px solid rgba(232,223,201,.35);padding:3px 10px;border-radius:20px}
+.gifts{margin:14px 14px 0;background:linear-gradient(180deg,#fffdf6,#f8f5ea);border:1px solid #e8e0c9;border-radius:14px;padding:13px 14px}
+.gifts h2{margin:0 0 8px;font-size:14px;color:#7a5427}
+.gifts .row{display:flex;flex-wrap:wrap;gap:7px}
+.gift{font-size:12px;background:#fff;border:1px solid #ece3cc;color:#6b5326;border-radius:20px;padding:4px 10px}
+.gift b{color:#a8894f}
+.gifts .note{font-size:11.5px;color:#9a8a6a;margin:8px 0 0}
+.bar2{position:sticky;top:0;z-index:15;background:rgba(251,250,246,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 14px 8px;margin-top:12px}
+.search{display:flex;gap:8px;align-items:center}
+.search input{flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;font-family:inherit;background:#fff;outline:none;min-width:0}
+.units{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;flex:0 0 auto}
+.units button{border:0;background:#fff;padding:9px 11px;font-size:13px;font-family:inherit;color:var(--muted);cursor:pointer}
+.units button.on{background:var(--green);color:#fff}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:9px 0 2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12.5px;padding:5px 11px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+.list{padding:6px 12px 10px}
+.item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:9px 0;display:flex;gap:10px;align-items:center}
+.item .info{flex:1;min-width:0}
+.item .nm{font-size:15px;font-weight:600;line-height:1.3}
+.item .nm span{font-size:11.5px;color:#96a49b;font-weight:400;margin-left:5px}
+.item .meta{font-size:11.5px;color:var(--muted);margin-top:2px}
+.prices{display:flex;align-items:baseline;gap:7px;margin-top:5px;flex-wrap:wrap}
+.p-l{font-size:11.5px;color:#96a49b}
+.p-old{font-size:12.5px;color:#b9a99a;text-decoration:line-through}
+.p-now{font-size:17px;font-weight:700;color:#8a5a2b}
+.p-now small{font-size:11px;font-weight:400;color:#a58a6a}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:0 0 auto;background:#fff}
+.step button{width:32px;height:34px;border:0;background:#f6f8f4;color:var(--green);font-size:17px;cursor:pointer}
+.step input{width:46px;height:34px;border:0;text-align:center;font-size:14px;font-family:inherit;background:#fff;outline:none}
+.more{text-align:center;padding:6px 0 16px}
+.more button{border:1px solid var(--line);background:#fff;color:var(--green);border-radius:20px;padding:8px 18px;font-size:13px;font-family:inherit;cursor:pointer}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(251,250,246,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:20}
+.bar .in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar .total{flex:1;line-height:1.25}
+.bar .total .l{font-size:11px;color:var(--muted)}
+.bar .total .v{font-size:21px;font-weight:700;color:var(--green)}
+.bar .total .v small{font-size:11px;font-weight:400;color:var(--muted);margin-left:5px}
+.btn{border:0;border-radius:10px;background:var(--green);color:#fff;font-size:15px;font-weight:600;padding:13px 18px;font-family:inherit;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--green);border:1.5px solid var(--green)}
+.sheet{position:fixed;inset:0;background:rgba(20,30,25,.45);display:none;z-index:40;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.sheet .card{background:#fff;width:100%;max-width:720px;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+.sheet h3{margin:0 0 6px;font-size:16px;color:var(--green)}
+.lines{font-size:13.5px;margin:8px 0}
+.lines .ln{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #eef1ea}
+.sheet .acts{display:flex;gap:10px;margin-top:12px}
+.sheet .acts .btn{flex:1}
+.secttl{margin:14px 4px 6px;font-size:13px;font-weight:600;color:#23443a}
+.secttl span{font-weight:400;font-size:11.5px;color:#96a49b;margin-left:6px}
+.fogitem{background:#fffdf9}
+.rec{display:inline-block;font-size:10.5px;background:#a8894f;color:#fff;border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:1px}
+.giftitem{background:#fffdf6;border-color:#ece3cc}
+.badge{flex:0 0 auto;font-size:11px;background:#f6e9d8;color:#8a5a2b;border-radius:8px;padding:3px 8px}
+.toast{position:fixed;left:50%;bottom:118px;transform:translateX(-50%) translateY(8px);background:#243b32;color:#fff;font-size:13px;padding:9px 16px;border-radius:20px;opacity:0;transition:.25s;z-index:60;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{text-align:center;font-size:11.5px;color:#8b9a90;padding:18px 16px 26px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">OFS · FANG TING</div>
+  <h1>Perfumer’s Kit</h1>
+  <div class="sub">Single essential oils · low MOQ · one price per order</div>
+  <div class="expo">76 single oils in stock</div>
+</header>
+
+<div class="gifts">
+  <h2>🎁 Free with every order</h2>
+  <div class="row">
+    <span class="gift"><b>100</b> professional scent strips</span>
+    <span class="gift"><b>100</b> × 3 ml dropper bottles</span>
+    <span class="gift"><b>20 sets</b> of 5 ml bottles</span>
+    <span class="gift">Fragrance wheel card (PDF)</span>
+    <span class="gift">1 roll blank labels</span>
+    <span class="gift">Perfumery handbook (PDF · 30 formulas)</span>
+    <span class="gift"><b>Custom</b> wooden perfume rack</span>
+    <span class="gift"><b>Glass pipettes</b> · 1 per bottle</span>
+  </div>
+</div>
+
+<div class="bar2">
+  <div class="search">
+    <input id="q" placeholder="Search: name / origin">
+    <div class="units">
+      <button id="u30" class="on">30 ml</button>
+      <button id="u1l">1 L</button>
+    </div>
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<div class="list" id="list"></div>
+<div class="more" id="moreWrap"><button id="more">Show more</button></div>
+
+<footer>
+  Guangzhou Fang Ting Aromatic Technology Co., Ltd. (OFS) · Guangzhou Ruinuosi Cosmetics Co., Ltd.<br>
+  76 single oils in stock · rare/custom materials (oud, aged tangerine peel, saffron…) quoted separately<br>Ex-works, excluding tax & freight (+13% for invoice) · valid 30 days<br>
+  Ms. Li +86 195 3934 1349 · Mr. Chen +86 159 1933 4313
+</footer>
+</div>
+
+<div class="bar"><div class="in">
+  <div class="total"><div class="l" id="cnt">Nothing selected</div><div class="v" id="sum">¥0</div></div>
+  <button class="btn" id="open">Review order</button>
+</div></div>
+
+<div class="sheet" id="sheet"><div class="card">
+  <h3>Order summary</h3>
+  <div class="lines" id="lines"></div>
+  <div style="font-size:12.5px;color:#6b7d74;margin:10px 0" id="giftline"></div>
+  <div class="acts">
+    <button class="btn ghost" id="pdf">Download PDF</button>
+    <button class="btn" id="close">Keep shopping</button>
+  </div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var ITEMS = [{"id":"M001","cn":"Sandalwood Australian","en":"60年老檀香","org":"澳大利亚","L":3800,"cat":"Woody"},{"id":"M003","cn":"Clove Bud","en":"丁香","org":"印尼","L":1380,"cat":"Floral"},{"id":"M004","cn":"Clove Bud","en":"丁香花蕾","org":"印尼","L":1380,"cat":"Floral"},{"id":"M005","cn":"Sandalwood Australian","en":"东印度老檀香","org":"澳大利亚","L":3800,"cat":"Woody"},{"id":"M006","cn":"Cypress","en":"丝柏","org":"法国","L":620,"cat":"Woody"},{"id":"M007","cn":"Frankincense","en":"乳香","org":"索马里","L":1180,"cat":"Resin"},{"id":"M008","cn":"Petitgrain Dai-Dai","en":"代代叶","org":"中国","L":870,"cat":"Herbal"},{"id":"M009","cn":"Bergamot","en":"佛手柑","org":"意大利","L":780,"cat":"Citrus"},{"id":"M010","cn":"Ylang Ylang Complete","en":"依兰","org":"科摩罗","L":980,"cat":"Floral"},{"id":"M011","cn":"Rose Damascena Bulgaria","en":"保加利亚玫瑰","org":"保加利亚","L":55000,"cat":"Floral"},{"id":"M012","cn":"Wintergreen","en":"冬青","org":"中国","L":380,"cat":"Woody"},{"id":"M014","cn":"Neroli","en":"国产橙花","org":"突尼斯","L":8800,"cat":"Citrus"},{"id":"M015","cn":"Jasmine Sambac Absolute","en":"大花茉莉","org":"中国","L":19400,"cat":"Floral"},{"id":"M016","cn":"Rose Damascena Bulgaria","en":"大马士革B玫瑰","org":"保加利亚","L":55000,"cat":"Floral"},{"id":"M017","cn":"Wintergreen","en":"天然冬青","org":"中国","L":380,"cat":"Woody"},{"id":"M018","cn":"Geranium Egypt","en":"天竺葵","org":"埃及","L":1950,"cat":"Floral"},{"id":"M019","cn":"Cumin Seed","en":"孜然","org":"印度","L":680,"cat":"Seeds & Roots"},{"id":"M020","cn":"Benzoin Siam","en":"安息香","org":"老挝","L":1100,"cat":"Resin"},{"id":"M021","cn":"Jasmine Sambac Absolute","en":"小花茉莉净油","org":"中国","L":19400,"cat":"Floral"},{"id":"M022","cn":"Eucalyptus Globulus","en":"尤加利","org":"中国","L":425,"cat":"Woody"},{"id":"M023","cn":"Litsea Cubeba","en":"山苍子","org":"中国","L":790,"cat":"Citrus"},{"id":"M025","cn":"Vetiver Haiti","en":"岩兰草","org":"海地","L":1300,"cat":"Herbal"},{"id":"M026","cn":"Patchouli Dark","en":"广藿香","org":"印尼","L":980,"cat":"Herbal"},{"id":"M027","cn":"Angelica Root","en":"当归","org":"法国","L":2800,"cat":"Seeds & Roots"},{"id":"M030","cn":"Bergamot","en":"意大利佛手柑","org":"意大利","L":780,"cat":"Citrus"},{"id":"M031","cn":"Rose Damascena Bulgaria","en":"摩洛哥玫瑰","org":"保加利亚","L":55000,"cat":"Floral"},{"id":"M032","cn":"Lavender Maillette","en":"有机薰衣草","org":"法国","L":1080,"cat":"Floral"},{"id":"M033","cn":"Juniper Berry","en":"杜松果","org":"意大利","L":2970,"cat":"Woody"},{"id":"M037","cn":"Pine Needle","en":"松针","org":"法国","L":480,"cat":"Woody"},{"id":"M039","cn":"Lemon","en":"柠檬","org":"意大利","L":740,"cat":"Citrus"},{"id":"M040","cn":"Citronella Java","en":"柠檬草","org":"印度","L":630,"cat":"Herbal"},{"id":"M041","cn":"Lemon","en":"柠檬醛","org":"意大利","L":740,"cat":"Citrus"},{"id":"M042","cn":"Osmanthus Absolute","en":"桂花","org":"中国","L":42000,"cat":"Floral"},{"id":"M043","cn":"Camphor Oil","en":"樟脑","org":"中国","L":265,"cat":"Resin"},{"id":"M044","cn":"Camphor Oil","en":"樟脑油","org":"中国","L":265,"cat":"Resin"},{"id":"M045","cn":"Sandalwood Australian","en":"檀香","org":"澳大利亚","L":3800,"cat":"Woody"},{"id":"M046","cn":"Basil Linalool","en":"沉香","org":"法国","L":680,"cat":"Herbal"},{"id":"M047","cn":"Agarwood","en":"沉香木","org":"越南","L":14300,"cat":"Woody"},{"id":"M048","cn":"Myrrh","en":"没药","org":"索马里","L":3840,"cat":"Resin"},{"id":"M049","cn":"Neroli","en":"法国橙花","org":"突尼斯","L":8800,"cat":"Citrus"},{"id":"M050","cn":"Lavender Maillette","en":"法国蓝薰衣草","org":"法国","L":1080,"cat":"Floral"},{"id":"M051","cn":"Lavender Maillette","en":"法国薰衣草","org":"法国","L":1080,"cat":"Floral"},{"id":"M052","cn":"Tea Tree","en":"澳洲茶树水溶","org":"澳大利亚","L":395,"cat":"Woody"},{"id":"M055","cn":"Sandalwood Australian","en":"特级檀香","org":"澳大利亚","L":3800,"cat":"Woody"},{"id":"M056","cn":"Rose Damascus A","en":"玫瑰大马士革A","org":"保加利亚","L":26000,"cat":"Floral"},{"id":"M057","cn":"Rose Damascena Bulgaria","en":"玫瑰果","org":"保加利亚","L":55000,"cat":"Floral"},{"id":"M058","cn":"Palmarosa","en":"玫瑰草","org":"印度","L":630,"cat":"Herbal"},{"id":"M059","cn":"Sweet Orange","en":"甜橙","org":"巴西","L":198,"cat":"Citrus"},{"id":"M060","cn":"Sweet Orange","en":"甜橙洗发_recipe","org":"巴西","L":198,"cat":"Citrus"},{"id":"M061","cn":"Clary Sage","en":"甜鼠尾草","org":"法国","L":1920,"cat":"Herbal"},{"id":"M064","cn":"Spearmint","en":"留兰香","org":"美国","L":580,"cat":"Herbal"},{"id":"M065","cn":"Michelia Alba Leaf","en":"白兰花叶","org":"中国","L":870,"cat":"Herbal"},{"id":"M066","cn":"Sandalwood White","en":"白檀","org":"印度","L":1680,"cat":"Woody"},{"id":"M067","cn":"Sandalwood White","en":"白檀香","org":"印度","L":1680,"cat":"Woody"},{"id":"M068","cn":"Thyme Red","en":"百里香","org":"西班牙","L":1300,"cat":"Herbal"},{"id":"M070","cn":"Myrrh Opoponax","en":"红没药","org":"索马里","L":2200,"cat":"Seeds & Roots"},{"id":"M071","cn":"Basil","en":"罗勒","org":"印度","L":440,"cat":"Herbal"},{"id":"M073","cn":"Cinnamon Bark","en":"肉桂","org":"斯里兰卡","L":565,"cat":"Spicy"},{"id":"M074","cn":"Cinnamon Bark","en":"肉桂叶","org":"斯里兰卡","L":565,"cat":"Spicy"},{"id":"M075","cn":"Carrot Seed","en":"胡萝卜籽","org":"法国","L":4300,"cat":"Seeds & Roots"},{"id":"M076","cn":"Artemisia Argyi","en":"艾叶","org":"中国","L":240,"cat":"Herbal"},{"id":"M078","cn":"Rosewood","en":"花梨木","org":"巴西","L":3530,"cat":"Woody"},{"id":"M079","cn":"Celery Seed","en":"芹菜籽","org":"中国","L":1960,"cat":"Seeds & Roots"},{"id":"M081","cn":"Petitgrain","en":"苦橙叶","org":"巴拉圭","L":1220,"cat":"Citrus"},{"id":"M083","cn":"Geranium Egypt","en":"英国天竺葵","org":"埃及","L":1950,"cat":"Floral"},{"id":"M084","cn":"Rose Damascena Bulgaria","en":"英国玫瑰","org":"保加利亚","L":55000,"cat":"Floral"},{"id":"M087","cn":"Fennel Sweet","en":"茴香","org":"匈牙利","L":540,"cat":"Spicy"},{"id":"M088","cn":"Tea Tree","en":"茶树","org":"澳大利亚","L":395,"cat":"Woody"},{"id":"M091","cn":"Grapefruit","en":"葡萄柚","org":"美国","L":1860,"cat":"Citrus"},{"id":"M092","cn":"Peppermint","en":"薄荷","org":"印度","L":750,"cat":"Herbal"},{"id":"M093","cn":"Lavender Maillette","en":"薰衣草法国","org":"法国","L":1080,"cat":"Floral"},{"id":"M097","cn":"Rosemary Camphor","en":"迷迭香","org":"突尼斯","L":940,"cat":"Herbal"},{"id":"M099","cn":"Cedarwood Virginia","en":"雪松","org":"美国","L":520,"cat":"Woody"},{"id":"M100","cn":"Lemongrass","en":"香茅","org":"印度","L":390,"cat":"Herbal"},{"id":"M101","cn":"Marjoram Sweet","en":"马郁兰","org":"埃及","L":3400,"cat":"Herbal"},{"id":"M102","cn":"Lemon Verbena","en":"马鞭草","org":"法国","L":583,"cat":"Citrus"}];
+var UNIT = 30, QTY = {}, CAT = 'All', PAGE = 1, PER = 20;
+function money(n){ var v = n<10 ? Math.round(n*100)/100 : Math.round(n*10)/10; return '¥' + v.toLocaleString('zh-CN'); }
+function p30(L){ return L/1000*30; }
+function p90(L){ return L/1000*90; }
+function pU(L,u){ return L/1000*u; }
+function effU(it){ return UNIT===30 ? (it.L>10000?10:30) : 1000; }
+var GIFTS = [
+ {cn:'Scent strips', spec:'100 pcs'},
+ {cn:'3 ml dropper bottles', spec:'100 pcs'},
+ {cn:'5 ml bottles', spec:'20 sets'},
+ {cn:'Fragrance wheel', spec:'PDF'},
+ {cn:'Blank labels', spec:'1 roll'},
+ {cn:'Perfumery handbook', spec:'30 formulas'},
+ {cn:'Custom wooden rack', spec:'1 pc'}
+];
+var FOGS = ['Mugler Cologne','Chanel Coco','Mane’s Rose','Jo Malone Wild Bluebell','Chanel Chance Eau Vive','CK One','Black Opium','Victoria’s Secret','Origins','La Petite Robe Noire','L’Occitane Red Rice'];
+var FOGQ = {};
+var cats = ['All'].concat(ITEMS.map(function(i){return i.cat;}).filter(function(v,i,a){return a.indexOf(v)===i;}));
+function renderChips(){ document.getElementById('chips').innerHTML = cats.map(function(c){ return '<div class="chip'+(c===CAT?' on':'')+'" data-cat="'+c+'">'+c+'</div>'; }).join(''); }
+function filtered(){
+  var q = document.getElementById('q').value.trim().toLowerCase();
+  return ITEMS.filter(function(it){
+    if(CAT!=='All' && it.cat!==CAT) return false;
+    if(!q) return true;
+    return (it.cn+' '+it.en+' '+it.org+' '+it.cnOrg).toLowerCase().indexOf(q)>-1;
+  });
+}
+function keyFor(i){ return i+'|'+effU(ITEMS[i]); }
+function renderList(reset){
+  if(reset) PAGE = 1;
+  var arr = filtered(), show = arr.slice(0, PAGE*PER);
+  var giftHTML = GIFTS.map(function(g){
+    return '<div class="item giftitem"><div class="info"><div class="nm">'+g.cn+'<span>FREE</span></div>'+
+      '<div class="meta">'+g.spec+' · included</div>'+
+      '<div class="prices"><span class="p-now">¥0.01</span><span class="p-l">FREE</span></div></div>'+
+      '<div class="badge">FREE</div></div>';
+  }).join('');
+  var fogHTML = '<div class="secttl">Ready-stock fragrances · 30 ml <span>¥9.9 / bottle</span></div>' + FOGS.map(function(n,i){
+    var q = FOGQ[i]||0;
+    var rec = (n==='L’Occitane Red Rice') ? '<span class="rec">BEST SELLER</span>' : '';
+    return '<div class="item fogitem"><div class="info"><div class="nm">'+n+rec+'<span>30ml</span></div>'+
+      '<div class="meta">In stock · ships now</div><div class="prices"><span class="p-now" style="color:#8a5a2b">¥9.9<small>/bottle</small></span></div></div>'+
+      '<div class="step"><button data-fog="-1" data-i="'+i+'">−</button><input type="number" min="0" value="'+q+'" data-fogq="'+i+'"><button data-fog="1" data-i="'+i+'">+</button></div></div>';
+  }).join('');
+  document.getElementById('list').innerHTML = giftHTML + fogHTML + '<div class="secttl">Single essential oils <span>per litre / 30 ml / 10 ml</span></div>' + show.map(function(it){
+    var i = ITEMS.indexOf(it), u = effU(it), qty = QTY[keyFor(i)] || 0, priceLine;
+    if(u===1000){
+      priceLine = '<span class="p-now">'+money(it.L)+'<small>/1L</small></span><span class="p-l">10ml '+money(pU(it.L,10))+'</span>';
+    } else {
+      priceLine = '<span class="p-old">'+money(pU(it.L,u*3))+'</span><span class="p-now">'+money(pU(it.L,u))+'<small>/'+u+'ml</small></span><span class="p-l">1L '+money(it.L)+'</span>'+(u===10?'<span class="p-l" style="color:#a8894f">High-value · per 10 ml</span>':'');
+    }
+    return '<div class="item"><div class="info"><div class="nm">'+it.cn+'<span>'+it.en+'</span></div>'+
+      '<div class="meta">'+it.cnOrg+' · '+it.cat+'</div><div class="prices">'+priceLine+'</div></div>'+
+      '<div class="step"><button data-step="-1" data-i="'+i+'">−</button><input type="number" min="0" value="'+qty+'" data-qty="'+i+'"><button data-step="1" data-i="'+i+'">+</button></div></div>';
+  }).join('') || '<p style="color:#8b9a90;text-align:center;padding:30px 0">No matching items</p>';
+  document.getElementById('moreWrap').style.display = (arr.length > PAGE*PER) ? 'block' : 'none';
+  calc();
+}
+function calc(){
+  var sum=0, cnt=0, lines=[];
+  GIFTS.forEach(function(g){ lines.push({cn:g.cn, en:'', u:0, q:1, amt:0.01, gift:true}); sum+=0.01; });
+  var bottles=0;
+  Object.keys(QTY).forEach(function(k){ var p2=k.split('|'),u2=+p2[1]; if(u2!==1000) bottles+=QTY[k]; });
+  FOGS.forEach(function(n,i){ var q0=FOGQ[i]||0; if(q0) bottles+=q0; });
+  if(bottles>0){ lines.push({cn:'Glass pipettes (1 per bottle)', en:'', u:0, q:bottles, amt:0.01, gift:true}); sum+=0.01; }
+  FOGS.forEach(function(n,i){ var q=FOGQ[i]||0; if(!q) return; sum+=9.9*q; cnt+=q; lines.push({cn:n, en:'ready stock', u:30, q:q, amt:9.9*q}); });
+  Object.keys(QTY).forEach(function(k){
+    var q=QTY[k]; if(!q) return;
+    var p=k.split('|'), i=+p[0], u=+p[1], it=ITEMS[i];
+    var up = pU(it.L,u);
+    sum += up*q; cnt += q;
+    lines.push({cn:it.cn, en:it.en, u:u, q:q, amt:up*q});
+  });
+  document.getElementById('sum').innerHTML = money(sum) + '<small>' + (UNIT===30?'30 ml':'1 L') + '</small>';
+  document.getElementById('cnt').textContent = cnt ? (lines.length+' items · '+cnt+' pcs') : 'Nothing selected';
+  window.__cart = {sum:sum, cnt:cnt, lines:lines};
+}
+document.addEventListener('click', function(e){
+  var t=e.target;
+  if(t.dataset && t.dataset.cat){ CAT=t.dataset.cat; renderChips(); renderList(true); return; }
+  var fb=t.closest ? t.closest('button[data-fog]') : null;
+  if(fb){
+    var fi=+fb.dataset.i; FOGQ[fi]=Math.max(0,(FOGQ[fi]||0)+ +fb.dataset.fog);
+    var inp2=document.querySelector('input[data-fogq="'+fi+'"]'); if(inp2) inp2.value=FOGQ[fi];
+    calc(); return;
+  }
+  var b=t.closest ? t.closest('button[data-step]') : null;
+  if(b){
+    var i=+b.dataset.i, key=keyFor(i);
+    QTY[key]=Math.max(0,(QTY[key]||0)+ +b.dataset.step);
+    var inp=document.querySelector('input[data-qty="'+i+'"]'); if(inp) inp.value=QTY[key];
+    calc();
+  }
+});
+document.addEventListener('change', function(e){
+  var t=e.target;
+  if(t.dataset && t.dataset.fogq){ var fi=+t.dataset.fogq, v2=parseInt(t.value||0,10); FOGQ[fi]=isNaN(v2)?0:Math.max(0,v2); calc(); return; }
+  if(t.dataset && t.dataset.qty){ var i=+t.dataset.qty, v=parseInt(t.value||0,10); QTY[keyFor(i)]=isNaN(v)?0:Math.max(0,v); calc(); }
+});
+document.getElementById('q').addEventListener('input', function(){ renderList(true); });
+document.getElementById('u30').textContent='30ml / 10ml';
+document.getElementById('u30').onclick=function(){ UNIT=30; this.classList.add('on'); document.getElementById('u1l').classList.remove('on'); renderList(true); };
+document.getElementById('u1l').onclick=function(){ UNIT=1000; this.classList.add('on'); document.getElementById('u30').classList.remove('on'); renderList(true); };
+document.getElementById('more').onclick=function(){ PAGE++; renderList(false); };
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); setTimeout(function(){t.classList.remove('on');},1800); }
+document.getElementById('open').onclick=function(){
+  var c=window.__cart||{sum:0,lines:[]};
+  if(!c.lines.length){ toast('Please select at least one item'); return; }
+  document.getElementById('lines').innerHTML = c.lines.map(function(l){
+    if(l.gift) return '<div class="ln"><span>🎁 '+l.cn+(l.q>1?(' × '+l.q):'')+'</span><b>¥0.01</b></div>';
+    return '<div class="ln"><span>'+l.cn+' · '+(l.u===1000?(l.q+' L'):(l.u+'ml × '+l.q))+'</span><b>'+money(l.amt)+'</b></div>';
+  }).join('') + '<div class="ln" style="border:0;padding-top:8px"><span><b>Total</b></span><b style="color:#23443a">'+money(c.sum)+'</b></div>';
+  var g='🎁 Included: 100 scent strips · 100 × 3 ml dropper bottles · 20 sets of 5 ml bottles · fragrance wheel (PDF) · 1 roll blank labels · perfumery handbook (30 formulas) · custom wooden rack · glass pipettes (1 per bottle)';
+  document.getElementById('giftline').textContent=g;
+  document.getElementById('sheet').classList.add('on');
+};
+document.getElementById('close').onclick=function(){ document.getElementById('sheet').classList.remove('on'); };
+function drawPDF(){
+  var c=window.__cart||{sum:0,lines:[]}, W=1240,H=1754,M=90;
+  var cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  var g=cv.getContext('2d'), F='"PingFang SC","Hiragino Sans GB",sans-serif';
+  g.fillStyle='#fff'; g.fillRect(0,0,W,H); var y=M;
+  g.fillStyle='#23443a'; g.font='600 48px '+F; g.fillText('OFS · Perfumer’s Kit — Order', M, y+26); y+=54;
+  g.font='23px '+F; g.fillStyle='#6b7d74'; g.fillText('Single essential oils · ex-works, tax & freight excluded', M, y+6); y+=38;
+  g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,3); y+=34;
+  var no='FR-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+String(Math.floor(Math.random()*9000+1000));
+  g.fillStyle='#1f2a26'; g.font='23px '+F; g.fillText('Order No. '+no, M, y); y+=32;
+  g.fillText('Date: '+new Date().toLocaleDateString('en-GB'), M, y); y+=44;
+  var rowH=42, maxRows=16;
+  g.fillStyle='#23443a'; g.fillRect(M,y,W-2*M,rowH); g.fillStyle='#fff'; g.font='600 22px '+F;
+  g.fillText('Item', M+14, y+28); g.fillText('Unit', M+520, y+28); g.fillText('Qty', M+700, y+28);
+  g.textAlign='right'; g.fillText('Amount', W-M-14, y+28); g.textAlign='left'; y+=rowH;
+  c.lines.slice(0,maxRows).forEach(function(l,i){
+    if(i%2){ g.fillStyle='#f7f8f4'; g.fillRect(M,y,W-2*M,rowH); }
+    g.fillStyle='#1f2a26'; g.font='22px '+F; g.fillText(l.cn, M+14, y+27);
+    g.fillText(l.gift?'FREE':(l.u===1000?'1 L':(l.u+' ml')), M+520, y+27); g.fillText(String(l.q), M+700, y+27);
+    g.textAlign='right'; g.fillText(money(l.amt), W-M-14, y+27); g.textAlign='left'; y+=rowH;
+  });
+  if(c.lines.length>maxRows){ g.fillStyle='#8b9a90'; g.font='20px '+F; g.fillText('… '+(c.lines.length-maxRows)+' more items', M+14, y+22); y+=30; }
+  y+=16; g.font='600 30px '+F; g.fillStyle='#23443a'; g.fillText('Total', M+760, y);
+  g.textAlign='right'; g.fillText(money(c.sum), W-M-14, y); g.textAlign='left'; y+=30;
+  g.font='19px '+F; g.fillStyle='#6b7d74'; g.textAlign='right'; g.fillText('Ex-works, excl. tax & freight (+13% for invoice)', W-M-14, y); g.textAlign='left'; y+=40;
+  g.fillText('FREE: 100 scent strips · 100 × 3 ml dropper bottles · 20 sets of 5 ml bottles · fragrance wheel (PDF) · blank labels · handbook · wooden rack · pipettes', M, y);
+  y=H-110; g.fillStyle='#d8ddd6'; g.fillRect(M,y,W-2*M,1); y+=30;
+  g.font='19px '+F; g.fillStyle='#6b7d74';
+  g.fillText('Guangzhou Fang Ting Aromatic Technology Co., Ltd. · Guangzhou Ruinuosi Cosmetics Co., Ltd.', M, y); y+=26;
+  g.fillText('Baiyunli International Beauty Center, Rm 2327 · Ms. Li +86 195 3934 1349 · Mr. Chen +86 159 1933 4313', M, y);
+  return {cv:cv,no:no};
+}
+function buildPDF(canvas){
+  var d=canvas.toDataURL('image/jpeg',0.92), b64=d.split(',')[1], bin=atob(b64);
+  var img=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) img[i]=bin.charCodeAt(i);
+  var w=canvas.width,h=canvas.height,PW=595.28,PH=841.89,parts=[],off={},pos=0;
+  function put(s){var b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i)&255;parts.push(b);pos+=b.length;}
+  function pb(u){parts.push(u);pos+=u.length;}
+  put('%PDF-1.4\n');
+  off[1]=pos;put('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  off[2]=pos;put('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+  off[3]=pos;put('3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n');
+  off[4]=pos;put('4 0 obj\n<< /Type /XObject /Subtype /Image /Width '+w+' /Height '+h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+img.length+' >>\nstream\n');
+  pb(img);put('\nendstream\nendobj\n');
+  var cs='q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q\n';
+  off[5]=pos;put('5 0 obj\n<< /Length '+cs.length+' >>\nstream\n'+cs+'endstream\nendobj\n');
+  var x=pos;put('xref\n0 6\n0000000000 65535 f \n');
+  for(var k=1;k<=5;k++) put(('0000000000'+off[k]).slice(-10)+' 00000 n \n');
+  put('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+x+'\n%%EOF\n');
+  return new Blob(parts,{type:'application/pdf'});
+}
+document.getElementById('pdf').onclick=function(){
+  var c=window.__cart; if(!c||!c.lines.length){ toast('Please select at least one item'); return; }
+  try{
+    var r=drawPDF(), url=URL.createObjectURL(buildPDF(r.cv)), a=document.createElement('a');
+    a.href=url; a.download='OFS_Perfumers_Kit_'+r.no+'.pdf'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},4000); toast('PDF downloaded');
+  }catch(e){ toast('Failed: '+e.message); }
+};
+renderChips(); renderList(true);
+</script>
+</body>
+</html>
