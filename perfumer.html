@@ -129,7 +129,17 @@ footer{text-align:center;font-size:11.5px;color:#8b9a90;padding:18px 16px 26px;l
   <div style="font-size:12.5px;color:#6b7d74;margin:10px 0" id="giftline"></div>
   <div class="acts">
     <button class="btn ghost" id="pdf">下载 PDF</button>
+    <button class="btn" id="submitOrder">提交订单</button>
     <button class="btn" id="close">继续选</button>
+  </div>
+  <div id="orderForm" style="display:none;margin-top:14px;border-top:1px dashed #cfdcd3;padding-top:14px;text-align:left">
+    <div style="font-size:13px;color:#23443a;font-weight:600;margin-bottom:10px">留下联系方式，我们核对后确认订单</div>
+    <input id="fName" placeholder="称呼 / 公司名" style="width:100%;box-sizing:border-box;padding:10px 12px;margin-bottom:8px;border:1px solid #d8e2da;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#23443a">
+    <input id="fCountry" placeholder="国家 / 地区" style="width:100%;box-sizing:border-box;padding:10px 12px;margin-bottom:8px;border:1px solid #d8e2da;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#23443a">
+    <input id="fWechat" placeholder="微信号（必填，方便确认订单）" style="width:100%;box-sizing:border-box;padding:10px 12px;margin-bottom:8px;border:1px solid #d8e2da;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#23443a">
+    <input id="fNote" placeholder="备注：自提还是快递？" style="width:100%;box-sizing:border-box;padding:10px 12px;margin-bottom:8px;border:1px solid #d8e2da;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#23443a">
+    <div id="fMsg" style="font-size:12.5px;color:#c0392b;min-height:18px;margin-bottom:6px"></div>
+    <button class="btn" id="doSubmit" style="width:100%">确认提交</button>
   </div>
 </div></div>
 
@@ -171,7 +181,7 @@ function renderList(reset){
   var giftHTML = GIFTS.map(function(g){
     return '<div class="item giftitem"><div class="info"><div class="nm">'+g.cn+'<span>赠品</span></div>'+
       '<div class="meta">'+g.spec+' · 随货发出</div>'+
-      '<div class="prices"><span class="p-now">¥0.01</span><span class="p-l">赠</span></div></div>'+
+      '<div class="prices"><span class="p-now">赠品</span></div></div>'+
       '<div class="badge">赠</div></div>';
   }).join('');
   var fogHTML = '<div class="secttl">现货香精 · 30ml <span>¥9.9 / 瓶</span></div>' + FOGS.map(function(n,i){
@@ -197,18 +207,18 @@ function renderList(reset){
 }
 function calc(){
   var sum=0, cnt=0, lines=[];
-  GIFTS.forEach(function(g){ lines.push({cn:g.cn, en:'', u:0, q:1, amt:0.01, gift:true}); sum+=0.01; });
+  GIFTS.forEach(function(g){ lines.push({code:'', cn:g.cn, en:'', u:0, q:1, unitPrice:0, amt:0, gift:true}); });
   var bottles=0;
   Object.keys(QTY).forEach(function(k){ var p2=k.split('|'),u2=+p2[1]; if(u2!==1000) bottles+=QTY[k]; });
   FOGS.forEach(function(n,i){ var q0=FOGQ[i]||0; if(q0) bottles+=q0; });
-  if(bottles>0){ lines.push({cn:'玻璃滴管（按瓶数配）', en:'', u:0, q:bottles, amt:0.01, gift:true}); sum+=0.01; }
+  if(bottles>0){ lines.push({code:'', cn:'玻璃滴管（按瓶数配）', en:'', u:0, q:bottles, unitPrice:0, amt:0, gift:true}); }
   FOGS.forEach(function(n,i){ var q=FOGQ[i]||0; if(!q) return; sum+=9.9*q; cnt+=q; lines.push({cn:n, en:'现货香精', u:30, q:q, amt:9.9*q}); });
   Object.keys(QTY).forEach(function(k){
     var q=QTY[k]; if(!q) return;
     var p=k.split('|'), i=+p[0], u=+p[1], it=ITEMS[i];
     var up = pU(it.L,u);
     sum += up*q; cnt += q;
-    lines.push({cn:it.cn, en:it.en, u:u, q:q, amt:up*q});
+    lines.push({code:it.id, cn:it.cn, en:it.en, u:u, q:q, unitPrice:up, amt:up*q});
   });
   document.getElementById('sum').innerHTML = money(sum) + '<small>' + (UNIT===30?'30ml 支':'1L 桶') + '</small>';
   var kinds=lines.filter(function(l){return !l.gift;}).length;
@@ -247,7 +257,7 @@ document.getElementById('open').onclick=function(){
   var c=window.__cart||{sum:0,lines:[]};
   if(!c.lines.length){ toast('还没选产品'); return; }
   document.getElementById('lines').innerHTML = c.lines.map(function(l){
-    if(l.gift) return '<div class="ln"><span>🎁 '+l.cn+(l.q>1?(' × '+l.q):'')+'</span><b>¥0.01</b></div>';
+    if(l.gift) return '<div class="ln"><span>🎁 '+l.cn+(l.q>1?(' × '+l.q):'')+'</span><b style="color:#1e7a52">FREE</b></div>';
     return '<div class="ln"><span>'+l.cn+' · '+(l.u===1000?(l.q+' L'):(l.u+'ml × '+l.q))+'</span><b>'+money(l.amt)+'</b></div>';
   }).join('') + '<div class="ln" style="border:0;padding-top:8px"><span><b>合计</b></span><b style="color:#23443a">'+money(c.sum)+'</b></div>';
   var g='🎁 随货赠：闻香纸 100 张 · 3ml 滴管瓶 100 支 · 5ml 精油瓶 20 套 · 香调轮盘卡(电子版) · 空白手写标签 1 卷 · 调香入门手册（30 个配方模板） · 订制调香木架 · 玻璃滴管(按瓶数)';
@@ -255,6 +265,36 @@ document.getElementById('open').onclick=function(){
   document.getElementById('sheet').classList.add('on');
 };
 document.getElementById('close').onclick=function(){ document.getElementById('sheet').classList.remove('on'); };
+// ===== 提交订单到 CloudBase =====
+var ORDER_API='https://ofs-asia-d9gk28pf5a4314791-1427882633.ap-shanghai.app.tcloudbase.com/collect-order';
+var ORDER_NO='';
+document.getElementById('submitOrder').onclick=function(){
+  document.getElementById('orderForm').style.display='block';
+  this.style.display='none';
+};
+document.getElementById('doSubmit').onclick=async function(){
+  var c=window.__cart||{sum:0,lines:[]};
+  var msg=document.getElementById('fMsg');
+  var wx=document.getElementById('fWechat').value.trim();
+  if(!wx){ msg.style.color='#c0392b'; msg.textContent='请填写微信号'; return; }
+  if(ORDER_NO){ msg.style.color='#1e7a52'; msg.textContent='已提交，订单号 '+ORDER_NO; return; }
+  var items=c.lines.filter(function(l){return !l.gift;}).map(function(l){
+    return {code:l.code||'',name:l.cn,spec:(l.u===1000?'1L':(l.u+'ml')),qty:l.q,unitPrice:l.unitPrice||0};
+  });
+  if(!items.length){ msg.textContent='还没选产品'; return; }
+  var body={source:'perfumer-kit',contact:{wechat:wx},
+    customer:{name:document.getElementById('fName').value.trim(),country:document.getElementById('fCountry').value.trim()},
+    items:items,total:c.sum,currency:'CNY',method:'quote',note:document.getElementById('fNote').value.trim()};
+  this.disabled=true; this.textContent='提交中…';
+  try{
+    var r=await fetch(ORDER_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var d=await r.json();
+    if(d&&d.ok){ ORDER_NO=d.orderNo; msg.style.color='#1e7a52';
+      msg.textContent='✅ 已提交，订单号 '+d.orderNo+' （核对后会与你联系）'; this.textContent='已提交'; }
+    else { msg.style.color='#c0392b'; msg.textContent=(d&&d.msg)||'提交失败，请重试'; this.disabled=false; this.textContent='确认提交'; }
+  }catch(e){ msg.style.color='#c0392b'; msg.textContent='网络错误，请重试或微信联系'; this.disabled=false; this.textContent='确认提交'; }
+};
+
 function drawPages(){
   var c=window.__cart||{sum:0,lines:[]};
   var items=c.lines.filter(function(l){return !l.gift;});
