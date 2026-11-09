@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1a14">
+<title>春佰亿 · 头皮深澈洁净油 500ml</title>
+<meta name="description" content="春佰亿 头皮深澈洁净油 500ml — 以油溶油，深澈净垢，植物精粹清洁污垢与油脂，舒适头皮，水润发丝。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e1a14'/%3E%3Ctext x='32' y='42' font-size='26' text-anchor='middle' fill='%23c1a15e' font-family='serif'%3E佰%3C/text%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0e1a14; --ink2:#1d3527; --gold:#b9974f; --gold-l:#d8c08a;
+  --cream:#f8f4ea; --cream2:#f2ecdd; --line:#e6dcc6; --text:#3f4f45; --mute:#8a968d;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Heiti SC","Microsoft YaHei",system-ui,sans-serif;
+  color:var(--text);background:var(--cream);line-height:1.75;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.serif{font-family:"Songti SC","Source Han Serif SC","Noto Serif SC",serif}
+.wrap{max-width:640px;margin:0 auto;padding:0 22px}
+section{padding:38px 0}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;background:
+    radial-gradient(80% 60% at 85% 0%,rgba(185,151,79,.18),transparent 62%),
+    radial-gradient(70% 50% at 0% 100%,rgba(14,26,20,.05),transparent 60%),
+    var(--cream);
+  padding:34px 0 0;overflow:hidden;
+}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--ink),var(--ink2))}
+.brand{display:flex;align-items:center;gap:9px;font-size:15px;letter-spacing:.26em;color:var(--ink)}
+.brand .dot{width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.brand .en{font-size:8.5px;letter-spacing:.28em;color:var(--gold);font-family:ui-sans-serif}
+h1{
+  font-family:"Songti SC",serif;font-size:clamp(30px,9vw,40px);line-height:1.28;
+  letter-spacing:.08em;font-weight:600;color:#0f1e16;margin:14px 0 0;
+}
+h1 em{font-style:normal;color:var(--gold)}
+.rule{width:44px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:16px 0 12px}
+.lead{font-size:13.5px;letter-spacing:.1em;color:#5c6b60;line-height:2}
+.spec{display:flex;gap:14px;margin:16px 0 0;font-size:11.5px;letter-spacing:.12em;color:var(--mute);flex-wrap:wrap}
+.spec b{color:var(--ink);font-weight:600;letter-spacing:.04em}
+.heropic{margin:22px -22px 0;position:relative}
+.heropic img{width:100%;display:block}
+.heropic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(248,244,234,.9),var(--cream))}
+
+/* ---------- slogan bar ---------- */
+.bar{background:var(--ink);color:var(--cream);padding:15px 22px;text-align:center;
+  font-family:"Songti SC",serif;font-size:12px;letter-spacing:.2em;line-height:2.2}
+.bar i{font-style:normal;color:var(--gold);margin:0 8px}
+
+/* ---------- section title ---------- */
+.sec-t{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+.sec-t .num{font-family:"Songti SC",serif;font-size:10px;letter-spacing:.2em;color:var(--gold)}
+.sec-t h2{font-family:"Songti SC",serif;font-size:20px;letter-spacing:.12em;font-weight:600;color:var(--ink)}
+.sec-t .line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+/* ---------- benefits ---------- */
+.benefit{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid rgba(230,220,198,.7)}
+.benefit:last-child{border-bottom:0}
+.benefit .no{font-family:"Songti SC",serif;font-size:13px;color:var(--gold);flex:0 0 auto;padding-top:2px}
+.benefit b{display:block;font-size:14.5px;color:var(--ink);font-weight:600;letter-spacing:.04em;margin-bottom:3px}
+.benefit span{font-size:13px;line-height:1.75;color:#6b7a6f}
+
+/* ---------- ingredients ---------- */
+.ingr{background:#fff;border:1px solid var(--line);border-radius:6px;padding:4px 18px;margin-top:6px}
+.ingr .row{padding:13px 0;border-bottom:1px dashed rgba(230,220,198,.9)}
+.ingr .row:last-child{border-bottom:0}
+.ingr b{display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--ink);font-weight:600}
+.ingr b i{font-style:normal;font-size:9px;letter-spacing:.16em;color:var(--gold);font-family:ui-sans-serif}
+.ingr p{font-size:12.5px;color:#7a877e;line-height:1.7;margin-top:2px}
+
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.step{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px 14px 15px}
+.step .n{font-family:"Songti SC",serif;font-size:19px;color:var(--gold);line-height:1;letter-spacing:.04em}
+.step b{display:block;font-size:13.5px;color:var(--ink);margin:8px 0 3px;font-weight:600}
+.step span{font-size:12px;color:#7a877e;line-height:1.6}
+
+/* ---------- photos ---------- */
+.photos{display:grid;gap:12px;margin-top:4px}
+.photos figure{border-radius:6px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.photos img{width:100%;display:block}
+
+/* ---------- quote / note ---------- */
+.note{margin-top:6px;font-size:11.5px;line-height:1.9;color:#93a096;letter-spacing:.02em}
+.note b{color:#7a877e;font-weight:600}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:rgba(248,244,234,.72);padding:30px 0 34px;text-align:center;margin-top:10px}
+footer .b{font-family:"Songti SC",serif;font-size:15px;letter-spacing:.3em;color:var(--cream)}
+footer .e{font-size:8.5px;letter-spacing:.24em;color:rgba(193,161,94,.85);margin-top:8px}
+footer .l{width:40px;height:1px;background:rgba(193,161,94,.5);margin:16px auto}
+footer .m{font-size:11px;letter-spacing:.12em;line-height:2;color:rgba(248,244,234,.55)}
+footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(193,161,94,.4)}
+
+@media (min-width:700px){
+  .wrap{max-width:760px;padding:0 32px}
+  .heropic{margin:26px 0 0;border-radius:8px;overflow:hidden}
+  .heropic::after{background:linear-gradient(180deg,transparent 72%,rgba(248,244,234,.55))}
+  section{padding:52px 0}
+  .steps{grid-template-columns:repeat(4,1fr)}
+  .photos{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="serif">春佰亿</span><span class="dot"></span><span class="en">CPUIMBAIYI</span></div>
+    <h1>以油溶油<br><em>深澈</em>净垢</h1>
+    <div class="rule"></div>
+    <p class="lead">植物精粹清洁污垢与油脂<br>舒适头皮 · 水润发丝</p>
+    <div class="spec"><span>头皮深澈洁净油 <b>500ml</b></span><span>Deep Cleansing Scalp Oil</span></div>
+  </div>
+  <div class="heropic"><img src="img/yanzi/p1.jpg" alt="春佰亿 头皮深澈洁净油 500ml" loading="eager"></div>
+</header>
+
+<div class="bar">油性头皮<i>·</i>发根易塌<i>·</i>发丝干涩<i>·</i>日常净护</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-t"><span class="num">01</span><h2>为什么是「油」</h2><span class="line"></span></div>
+    <div class="benefit"><span class="no serif">壹</span><div><b>油腻堆积</b><span>以油溶油，温和带走头皮与发丝表面的顽固油脂与造型残留，清洁不靠摩擦。</span></div></div>
+    <div class="benefit"><span class="no serif">贰</span><div><b>发根易塌</b><span>净澈之后头皮清爽，发根自然立起来，洗后更轻盈蓬松，不贴头皮。</span></div></div>
+    <div class="benefit"><span class="no serif">叁</span><div><b>发丝干涩</b><span>清洁同时保留水分，洗后不干不涩，顺滑易梳、有光泽。</span></div></div>
+    <div class="benefit"><span class="no serif">肆</span><div><b>日常净护</b><span>温和配方，呵护头皮天然屏障，适合长期日常使用。</span></div></div>
+  </div>
+</section>
+
+<section style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-t"><span class="num">02</span><h2>四重植物精粹</h2><span class="line"></span></div>
+    <div class="ingr">
+      <div class="row"><b>异十六烷 <i>ISOHEXADECANE</i></b><p>轻质净澈基底，以油溶油，带走头皮与发丝表面的顽固油垢。</p></div>
+      <div class="row"><b>葡萄籽油 <i>GRAPE SEED OIL</i></b><p>清爽不厚重，帮助清洁后保持发丝柔软。</p></div>
+      <div class="row"><b>油橄榄果油 <i>OLIVE FRUIT OIL</i></b><p>温和滋养，减少清洁后的干涩感。</p></div>
+      <div class="row"><b>山茶籽油 <i>CAMELLIA SEED OIL</i></b><p>东方草本滋养，令发丝顺滑有光泽。</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-t"><span class="num">03</span><h2>简单 4 步 · 头皮 SPA</h2><span class="line"></span></div>
+    <div class="steps">
+      <div class="step"><div class="n serif">01</div><b>取适量</b><span>洁净油倒于掌心</span></div>
+      <div class="step"><div class="n serif">02</div><b>均匀涂抹</b><span>涂抹于头皮与发丝</span></div>
+      <div class="step"><div class="n serif">03</div><b>轻柔按摩</b><span>按摩 3–5 分钟</span></div>
+      <div class="step"><div class="n serif">04</div><b>清水冲净</b><span>冲洗干净即可</span></div>
+    </div>
+    <p class="note"><b>注意事项：</b>不慎入眼请立即用清水彻底冲洗；如出现不适请停止使用。请置于儿童不易触及处，避免阳光直射。</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-t"><span class="num">04</span><h2>看得见的净澈</h2><span class="line"></span></div>
+    <div class="photos">
+      <figure><img src="img/yanzi/p3.jpg" alt="使用前后对比" loading="lazy"></figure>
+      <figure><img src="img/yanzi/p4.jpg" alt="简单四步 头皮SPA" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="b serif">春佰亿</div>
+    <div class="e">CPUIMBAIYI · DEEP CLEANSING SCALP OIL</div>
+    <div class="l"></div>
+    <div class="m">
+      头皮深澈洁净油 · 净含量 500ml<br>
+      产品介绍页 · 图片仅供参考，以实物为准
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
